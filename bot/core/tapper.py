@@ -365,50 +365,6 @@ class Tapper:
                         await asyncio.sleep(delay=.5)
 
                     taps = randint(a=settings.RANDOM_TAPS_COUNT[0], b=settings.RANDOM_TAPS_COUNT[1])
-                    bot_config = await self.get_bot_config(http_client=http_client)
-                    telegramMe = await self.get_user_data(http_client=http_client)
-
-                    if telegramMe['isReferralInitialJoinBonusAvailable'] is True:
-                        await self.claim_referral_bonus(http_client=http_client)
-                        logger.info(f"{self.session_name} | 🔥Referral bonus was claimed")
-                    
-                    if bot_config['isPurchased'] is False and settings.AUTO_BUY_TAPBOT is True:
-                        await self.upgrade_boost(http_client=http_client, boost_type=UpgradableBoostType.TAPBOT)
-                        logger.info(f"{self.session_name} | 👉 Tapbot was purchased - 😴 Sleep 3s")
-                        await asyncio.sleep(delay=3)
-                        bot_config = await self.get_bot_config(http_client=http_client)
-
-                    if bot_config['isPurchased'] is True:
-                        if bot_config['usedAttempts'] <= bot_config['totalAttempts'] and not bot_config['endsAt']:
-                            finishedTapbot = False
-                            await self.start_bot(http_client=http_client)
-                            bot_config = await self.get_bot_config(http_client=http_client)
-                            logger.info(f"{self.session_name} | 👉 Tapbot is started")
-
-                        if bot_config['endsAt']:
-                            endAtDate = datetime.strptime(bot_config['endsAt'], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp()
-                            currentDate =  datetime.now(timezone.utc).timestamp()
-                            if endAtDate < currentDate:
-                                await self.claim_bot(http_client=http_client)
-                                logger.info(f"{self.session_name} | 👉 Tapbot was claimed - 😴 Sleep 5s before starting again")
-                                asyncio.sleep(delay=3)
-                                bot_config = await self.get_bot_config(http_client=http_client)
-                                asyncio.sleep(delay=2)
-
-                                if bot_config['usedAttempts'] <= bot_config['totalAttempts']:
-                                    finishedTapbot = False
-                                    await self.start_bot(http_client=http_client)
-                                    logger.info(f"{self.session_name} | 👉 Tapbot is started")
-                                else:
-                                    if(finishedTapbot is False):
-                                        logger.info(f"{self.session_name} | 👉 Finished tapbot available usage of the day.")
-                                        finishedTapbot = True
-                            
-                        else:
-                            if(finishedTapbot is False):
-                                logger.info(f"{self.session_name} | 👉 Finished tapbot available usage of the day.")
-                                finishedTapbot = True
-                    
                     
                     if active_turbo:
                         taps += settings.ADD_TAPS_ON_TURBO
@@ -439,6 +395,53 @@ class Tapper:
                     current_boss = profile_data['currentBoss']
                     current_boss_level = current_boss['level']
                     boss_current_health = current_boss['currentHealth']
+
+                    bot_config = await self.get_bot_config(http_client=http_client)
+                    telegramMe = await self.get_user_data(http_client=http_client)
+
+                    if telegramMe['isReferralInitialJoinBonusAvailable'] is True:
+                        await self.claim_referral_bonus(http_client=http_client)
+                        logger.info(f"{self.session_name} | 🔥Referral bonus was claimed")
+                    
+                    if bot_config['isPurchased'] is False and settings.AUTO_BUY_TAPBOT is True:
+                        await self.upgrade_boost(http_client=http_client, boost_type=UpgradableBoostType.TAPBOT)
+                        logger.info(f"{self.session_name} | 👉 Tapbot was purchased - 😴 Sleep 3s")
+                        await asyncio.sleep(delay=3)
+                        bot_config = await self.get_bot_config(http_client=http_client)
+
+                    if bot_config['isPurchased'] is True:
+                        if bot_config['usedAttempts'] <= bot_config['totalAttempts'] and not bot_config['endsAt']:
+                            finishedTapbot = False
+                            await self.start_bot(http_client=http_client)
+                            bot_config = await self.get_bot_config(http_client=http_client)
+                            logger.info(f"{self.session_name} | 👉 Tapbot is started")
+
+                        if bot_config['endsAt']:
+                            endAtDate = datetime.strptime(bot_config['endsAt'], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp()
+                            currentDate =  datetime.now(timezone.utc).timestamp()
+                            if endAtDate < currentDate:
+                                await self.claim_bot(http_client=http_client)
+                                logger.info(f"{self.session_name} | 👉 Tapbot was claimed - 😴 Sleep 5s before starting again")
+                                await asyncio.sleep(delay=3)
+                                bot_config = await self.get_bot_config(http_client=http_client)
+                                await asyncio.sleep(delay=2)
+
+                                if bot_config['usedAttempts'] <= bot_config['totalAttempts']:
+                                    finishedTapbot = False
+                                    await self.start_bot(http_client=http_client)
+                                    logger.info(f"{self.session_name} | 👉 Tapbot is started")
+                                else:
+                                    if(finishedTapbot is False):
+                                        logger.info(f"{self.session_name} | 👉 Finished tapbot available usage of the day.")
+                                        finishedTapbot = True
+                            else:
+                                claimDate =datetime.fromtimestamp(endAtDate)
+                                logger.info(f"{self.session_name} | 👉 Tapbot will be available for claim {claimDate}")
+                        else:
+                            if(finishedTapbot is False):
+                                logger.info(f"{self.session_name} | 👉 Finished tapbot available usage of the day.")
+                                finishedTapbot = True
+                    
 
                     if calc_taps > 0:
                         logger.success(f"{self.session_name} | ✅ Successful tapped! 🔨 | "
