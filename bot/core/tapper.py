@@ -436,7 +436,7 @@ class Tapper:
                                         finishedTapbot = True
                             else:
                                 claimDate =datetime.fromtimestamp(endAtDate)
-                                logger.info(f"{self.session_name} | 👉 Tapbot will be available for claim {claimDate}")
+                                logger.info(f"{self.session_name} | 👉 Tapbot will be available for claim at {claimDate}")
                         else:
                             if(finishedTapbot is False):
                                 logger.info(f"{self.session_name} | 👉 Finished tapbot available usage of the day.")
