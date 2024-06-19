@@ -16,7 +16,7 @@ from bot.utils.graphql import Query, OperationName
 from bot.utils.boosts import FreeBoostType, UpgradableBoostType
 from bot.exceptions import InvalidSession
 from .headers import headers
-
+from datetime import datetime, timedelta, timezone
 
 class Tapper:
     def __init__(self, tg_client: Client):
@@ -83,6 +83,8 @@ class Tapper:
                             'last_name': me.last_name if me.last_name else '',
                             'username': me.username if me.username else '',
                             'language_code': me.language_code if me.language_code else 'en',
+                            'platform': 'ios',
+                            'version': '7.2'
                         },
                     },
                 }
@@ -132,6 +134,25 @@ class Tapper:
             logger.error(f"{self.session_name} | Unknown error while getting Profile Data: {error}")
             await asyncio.sleep(delay=3)
 
+    async def get_user_data(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.QueryTelegramUserMe,
+                'query': Query.QueryTelegramUserMe,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            response_json = await response.json()
+            user_data = response_json['data']['telegramUserMe']
+            
+
+            return user_data
+        except Exception as error:
+            logger.error(f"{self.session_name} | Unknown error while getting User Data: {error}")
+            await asyncio.sleep(delay=3)
 
     async def set_next_boss(self, http_client: aiohttp.ClientSession):
         try:
@@ -147,6 +168,79 @@ class Tapper:
             return True
         except Exception as error:
             logger.error(f"{self.session_name} | Unknown error while Setting Next Boss: {error}")
+            await asyncio.sleep(delay=3)
+
+            return False
+        
+    async def get_bot_config(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.TapbotConfig,
+                'query': Query.TapbotConfig,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            response_json = await response.json()
+            bot_config = response_json['data']['telegramGameTapbotGetConfig']
+
+            return bot_config
+        except Exception as error:
+            logger.error(f"{self.session_name} | Unknown error while getting Bot Config: {error}")
+            await asyncio.sleep(delay=3)
+    
+    async def start_bot(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.TapbotStart,
+                'query': Query.TapbotStart,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            return True
+        except Exception as error:
+            logger.error(f"{self.session_name} | Unknown error while Starting Bot: {error}")
+            await asyncio.sleep(delay=3)
+
+            return False
+    
+    async def claim_bot(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.TapbotClaim,
+                'query': Query.TapbotClaim,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            return True
+        except Exception as error:
+            logger.error(f"{self.session_name} | Unknown error while Claiming Bot: {error}")
+            await asyncio.sleep(delay=3)
+
+            return False
+        
+    async def claim_referral_bonus(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.Mutation,
+                'query': Query.Mutation,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            return True
+        except Exception as error:
+            logger.error(f"{self.session_name} | Unknown error while Claiming Referral Bonus: {error}")
             await asyncio.sleep(delay=3)
 
             return False
@@ -234,6 +328,7 @@ class Tapper:
         turbo_time = 0
         active_turbo = False
         noBalance = False
+        finishedTapbot = False
 
         proxy_conn = ProxyConnector().from_url(proxy) if proxy else None
 
@@ -270,7 +365,51 @@ class Tapper:
                         await asyncio.sleep(delay=.5)
 
                     taps = randint(a=settings.RANDOM_TAPS_COUNT[0], b=settings.RANDOM_TAPS_COUNT[1])
+                    bot_config = await self.get_bot_config(http_client=http_client)
+                    telegramMe = await self.get_user_data(http_client=http_client)
 
+                    if telegramMe['isReferralInitialJoinBonusAvailable'] is True:
+                        await self.claim_referral_bonus(http_client=http_client)
+                        logger.info(f"{self.session_name} | Referral bonus was claimed")
+                    
+                    if bot_config['isPurchased'] is False and settings.AUTO_BUY_TAPBOT is True:
+                        await self.upgrade_boost(http_client=http_client, boost_type=UpgradableBoostType.TAPBOT)
+                        logger.info(f"{self.session_name} | Tapbot was purchased - Sleep 3s")
+                        await asyncio.sleep(delay=3)
+                        bot_config = await self.get_bot_config(http_client=http_client)
+
+                    if bot_config['isPurchased'] is True:
+                        if bot_config['usedAttempts'] <= bot_config['totalAttempts'] and not bot_config['endsAt']:
+                            finishedTapbot = False
+                            await self.start_bot(http_client=http_client)
+                            bot_config = await self.get_bot_config(http_client=http_client)
+                            logger.info(f"{self.session_name} | Tapbot is started")
+
+                        if bot_config['endsAt']:
+                            endAtDate = datetime.strptime(bot_config['endsAt'], "%Y-%m-%dT%H:%M:%S.%fZ").timestamp()
+                            currentDate =  datetime.now(timezone.utc).timestamp()
+                            if endAtDate < currentDate:
+                                await self.claim_bot(http_client=http_client)
+                                logger.info(f"{self.session_name} | Tapbot was claimed - Sleep 5s before starting again")
+                                asyncio.sleep(delay=3)
+                                bot_config = await self.get_bot_config(http_client=http_client)
+                                asyncio.sleep(delay=2)
+
+                                if bot_config['usedAttempts'] <= bot_config['totalAttempts']:
+                                    finishedTapbot = False
+                                    await self.start_bot(http_client=http_client)
+                                    logger.info(f"{self.session_name} | Tapbot is started")
+                                else:
+                                    if(finishedTapbot is False):
+                                        logger.info(f"{self.session_name} | Finished tapbot available usage of the day.")
+                                        finishedTapbot = True
+                            
+                        else:
+                            if(finishedTapbot is False):
+                                logger.info(f"{self.session_name} | Finished tapbot available usage of the day.")
+                                finishedTapbot = True
+                    
+                    
                     if active_turbo:
                         taps += settings.ADD_TAPS_ON_TURBO
                         if time() - turbo_time > 10:

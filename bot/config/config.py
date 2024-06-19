@@ -12,6 +12,8 @@ class Settings(BaseSettings):
 
     ADD_TAPS_ON_TURBO: int = 2500
 
+    AUTO_BUY_TAPBOT: bool = True
+
     AUTO_UPGRADE_TAP: bool = True
     MAX_TAP_LEVEL: int = 5
     AUTO_UPGRADE_ENERGY: bool = True

@@ -10,16 +10,21 @@
 
 | Functional                                                     | Supported |
 | -------------------------------------------------------------- | :-------: |
+| Purchasing TapBot                                              |    ✅     |
+| Starting TapBot                                                |    ✅     |
+| Claiming TapBot reward every 3 hours                           |    ✅     |
+| Claiming Daily Combo                                           |    ✅     |
 | Multithreading                                                 |    ✅     |
 | Binding a proxy to a session                                   |    ✅     |
 | Auto-purchase of items if you have coins (tap, energy, charge) |    ✅     |
 | Random sleep time between clicks                               |    ✅     |
 | Random number of clicks per request                            |    ✅     |
 | Support tdata / pyrogram .session / telethon .session          |    ✅     |
+| Referral bonus claiming after first time registering           |    ✅     |
 
 ## [Settings](https://github.com/FreddyWhest/MemeFiBot/blob/main/.env-example)
 
-| Настройка                | Описание                                                                               |
+| Settings                 | Description                                                                            |
 | ------------------------ | -------------------------------------------------------------------------------------- |
 | **API_ID / API_HASH**    | Platform data from which to launch a Telegram session (stock - Android)                |
 | **MIN_AVAILABLE_ENERGY** | Minimum amount of available energy, upon reaching which there will be a delay (eg 100) |
@@ -36,6 +41,8 @@
 | **RANDOM_CLICKS_COUNT**  | Random number of taps (eg 50,200)                                                      |
 | **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (eg 10,25)                                        |
 | **USE_PROXY_FROM_FILE**  | Whether to use proxy from the `bot/config/proxies.txt` file (True / False)             |
+| **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (eg 10,26)                                        |
+| **AUTO_BUY_TAPBOT**      | Whether to purchase tapbot automatically (True / False)                                |
 
 ## Installation
 
