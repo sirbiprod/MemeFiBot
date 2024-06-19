@@ -2,7 +2,7 @@
 
 > [<img src="https://img.shields.io/badge/Telegram-%40Me-orange">](https://t.me/roddyfred)
 
-![img1](https://i.ibb.co/fxZWykz/Screenshot-9.png)
+![img1](./.github/image/hero-image.png)
 
 # Используйте Python 3.11 или более раннюю версию.
 

@@ -2,7 +2,7 @@
 
 > [<img src="https://img.shields.io/badge/Telegram-%40Me-orange">](https://t.me/roddyfred)
 
-![img1](https://i.ibb.co/fxZWykz/Screenshot-9.png)
+![img1](./.github/image/hero-image.png)
 
 # Use Python 3.11 or less
 
@@ -89,3 +89,7 @@ Also for quick launch you can use arguments, for example:
 #1 - Create session
 #2 - Run clicker
 ```
+
+## Acknowledgments
+
+- [Shamhi](https://github.com/shamhi)
