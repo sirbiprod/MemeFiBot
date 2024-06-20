@@ -218,7 +218,8 @@ class Tapper:
 
             response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
             response.raise_for_status()
-            data = response['data']["telegramGameTapbotClaim"]
+            response_json = await response.json()
+            data = response_json['data']["telegramGameTapbotClaim"]
             return {"isClaimed": False, "data": data}
         except Exception as error:
             return {"isClaimed": True, "data": None}
@@ -305,7 +306,6 @@ class Tapper:
 
             response_json = await response.json()
             profile_data = response_json['data']['telegramGameProcessTapsBatch']
-
             return profile_data
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error when Tapping: {error}")
