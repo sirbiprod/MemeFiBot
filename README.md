@@ -1,10 +1,9 @@
-> 🇷🇺 README на русском доступен [здесь](README-RU.md)
+> README на русском доступен [здесь](README-RU.md)
 
-> [<img src="https://img.shields.io/badge/Telegram-%40Me-orange">](https://t.me/roddyfred)
 
 ![img1](./.github/image/hero-image.png)
 
-# Use Python 3.11 or less
+# Use Python 3.10
 
 ## Functionality
 
@@ -24,32 +23,31 @@
 
 ## [Settings](https://github.com/FreddyWhest/MemeFiBot/blob/main/.env-example)
 
-| Settings                 | Description                                                                            |
-| ------------------------ | -------------------------------------------------------------------------------------- |
-| **API_ID / API_HASH**    | Platform data from which to launch a Telegram session (stock - Android)                |
-| **MIN_AVAILABLE_ENERGY** | Minimum amount of available energy, upon reaching which there will be a delay (eg 100) |
-| **SLEEP_BY_MIN_ENERGY**  | Delay when reaching minimum energy in seconds (eg 200)                                 |
-| **ADD_TAPS_ON_TURBO**    | How many taps will be added when turbo is activated (eg 2500)                          |
-| **AUTO_UPGRADE_TAP**     | Should I improve the tap (True / False)                                                |
-| **MAX_TAP_LEVEL**        | Maximum level of tap pumping (eg 5)                                                    |
-| **AUTO_UPGRADE_ENERGY**  | Should I improve the tap (True / False)                                                |
-| **MAX_ENERGY_LEVEL**     | Maximum level of tap pumping (eg 5)                                                    |
-| **AUTO_UPGRADE_CHARGE**  | Should I improve the tap (True / False)                                                |
-| **MAX_CHARGE_LEVEL**     | Maximum level of tap pumping (eg 5)                                                    |
-| **APPLY_DAILY_ENERGY**   | Whether to use the daily free energy boost (True / False)                              |
-| **APPLY_DAILY_TURBO**    | Whether to use the daily free turbo boost (True / False)                               |
-| **RANDOM_CLICKS_COUNT**  | Random number of taps (eg 50,200)                                                      |
-| **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (eg 10,25)                                        |
-| **USE_PROXY_FROM_FILE**  | Whether to use proxy from the `bot/config/proxies.txt` file (True / False)             |
-| **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (eg 10,26)                                        |
-| **AUTO_BUY_TAPBOT**      | Whether to purchase tapbot automatically (True / False)                                |
+| Settings                 | Description                                                                                 |
+| ------------------------ | --------------------------------------------------------------------------------------------|
+| **API_ID / API_HASH**    | Platform data from which to launch a Telegram session (stock - Android)                     |
+| **MIN_AVAILABLE_ENERGY** | Minimum amount of available energy, upon reaching which there will be a delay (default 300) |
+| **SLEEP_BY_MIN_ENERGY**  | Delay when reaching minimum energy in seconds (eg 314)                                      |
+| **ADD_TAPS_ON_TURBO**    | How many taps will be added when turbo is activated (eg 2000)                               |
+| **AUTO_UPGRADE_TAP**     | Should I improve the tap (True / False) (default False)                                     |
+| **MAX_TAP_LEVEL**        | Maximum level of tap pumping (eg 5)                                                         |
+| **AUTO_UPGRADE_ENERGY**  | Should I improve the tap (True / False)  (default False)                                    |
+| **MAX_ENERGY_LEVEL**     | Maximum level of tap pumping (eg 5)                                                         |
+| **AUTO_UPGRADE_CHARGE**  | Should I improve the tap (True / False)  (default False)                                    |
+| **MAX_CHARGE_LEVEL**     | Maximum level of tap pumping (eg 5)                                                         |
+| **APPLY_DAILY_ENERGY**   | Whether to use the daily free energy boost (True / False)  (default True)                   |
+| **APPLY_DAILY_TURBO**    | Whether to use the daily free turbo boost (True / False)   (default True)                   |
+| **RANDOM_CLICKS_COUNT**  | Random number of taps     (default [5, 23] )                                                |
+| **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (default [15, 25] )                                    |
+| **USE_PROXY_FROM_FILE**  | Whether to use proxy from the `bot/config/proxies.txt` file (True / False)                  |
+| **AUTO_BUY_TAPBOT**      | Whether to purchase tapbot automatically (True / False)                                     |
 
 ## Installation
 
-You can download [**Repository**](https://github.com/FreddyWhest/MemeFiBot) by cloning it to your system and installing the necessary dependencies:
+You can download [**Repository**](https://github.com/sibiprod/MemeFiBot) by cloning it to your system and installing the necessary dependencies:
 
 ```shell
-~ >>> git clone https://github.com/FreddyWhest/MemeFiBot.git
+~ >>> git clone https://github.com/sibiprod/MemeFiBot.git
 ~ >>> cd MemeFiBot
 
 #Linux and MocOS
