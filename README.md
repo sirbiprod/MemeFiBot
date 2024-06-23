@@ -52,7 +52,7 @@ You can download [**Repository**](https://github.com/sibiprod/MemeFiBot) by clon
 
 #Linux and MocOS
 1. Double click on install.sh in MemeFiBot directory to install the dependencies
-2. python3 main.py
+2. bash run.sh
 
 OR
 
