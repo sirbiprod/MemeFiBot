@@ -72,7 +72,7 @@ async def process() -> None:
 
     logger.info(f"Detected {len(get_session_names())} sessions | {len(get_proxies())} proxies")
     logger.warning("⚠️ \n<e>en:</e> NOT FOR SALE\n<e>ru:</e> НЕ ДЛЯ ПРОДАЖИ\n<e>es:</e> NO VENTA\n<e>fr:</e> PAS À VENDRE\n<e>it:</e> NON PER VENDITA\n<e>gh:</e> YƐN TƆN")
-    logger.info("<b>For updates and support visit:</b> <e>https://github.com/Freddywhest/MemeFiBot</e>")
+    logger.info("<b>For updates and support visit:</b> <e>https://github.com/sirbiprod/MemeFiBot</e>")
 
     action = parser.parse_args().action
 
