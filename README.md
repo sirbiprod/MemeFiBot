@@ -47,7 +47,7 @@
 You can download [**Repository**](https://github.com/sibiprod/MemeFiBot) by cloning it to your system and installing the necessary dependencies:
 
 ```shell
-~ >>> git clone https://github.com/sibiprod/MemeFiBot.git
+~ >>> git clone https://github.com/sirbiprod/MemeFiBot.git
 ~ >>> cd MemeFiBot
 
 #Linux and MocOS
