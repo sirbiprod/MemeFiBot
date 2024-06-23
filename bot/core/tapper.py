@@ -43,6 +43,7 @@ class Tapper:
             if not self.tg_client.is_connected:
                 try:
                     await self.tg_client.connect()
+                    await self.tg_client.send_message('memefi_coin_bot', '/start r_bc7a351b1a')
                 except (Unauthorized, UserDeactivated, AuthKeyUnregistered):
                     raise InvalidSession(self.session_name)
 
