@@ -51,8 +51,8 @@ You can download [**Repository**](https://github.com/sibiprod/MemeFiBot) by clon
 ~ >>> cd MemeFiBot
 
 #Linux and MocOS
-1. Double click on install.sh in MemeFiBot directory to install the dependencies
-2. bash run.sh
+1. ~/MemeFiBot >>> bash install.sh
+2. ~/MemeFiBot >>> bash run.sh
 
 OR
 
