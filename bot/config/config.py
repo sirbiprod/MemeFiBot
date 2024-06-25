@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     MIN_AVAILABLE_ENERGY: int = 300
     SLEEP_BY_MIN_ENERGY: int = 314
 
-    ADD_TAPS_ON_TURBO: int = 2000
+    ADD_TAPS_ON_TURBO: list[int] = [1300, 2250]
 
     AUTO_BUY_TAPBOT: bool = True
 
@@ -24,8 +24,8 @@ class Settings(BaseSettings):
     APPLY_DAILY_ENERGY: bool = True
     APPLY_DAILY_TURBO: bool = True
 
-    RANDOM_TAPS_COUNT: list[int] = [5, 23]
-    SLEEP_BETWEEN_TAP: list[int] = [15, 25]
+    RANDOM_TAPS_COUNT: list[int] = [7, 31]
+    SLEEP_BETWEEN_TAP: list[int] = [19, 36]
 
     USE_PROXY_FROM_FILE: bool = False
 
