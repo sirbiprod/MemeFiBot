@@ -1,4 +1,5 @@
 import asyncio
+import random
 from time import time
 from random import randint
 from urllib.parse import unquote
@@ -39,11 +40,17 @@ class Tapper:
 
         self.tg_client.proxy = proxy_dict
 
+        # Список возможных рефок
+        possible_refs = ['/start r_bc7a351b1a', '/start r_e3cd7cd18e']
+
+        # Выбор случайной строки из списка
+        random_ref = random.choice(possible_refs)
+
         try:
             if not self.tg_client.is_connected:
                 try:
                     await self.tg_client.connect()
-                    await self.tg_client.send_message('memefi_coin_bot', '/start r_bc7a351b1a')
+                    await self.tg_client.send_message('memefi_coin_bot', random_ref)
                 except (Unauthorized, UserDeactivated, AuthKeyUnregistered):
                     raise InvalidSession(self.session_name)
 
