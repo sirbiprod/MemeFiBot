@@ -100,7 +100,7 @@ class Tapper:
 
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error during Authorization: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
     async def get_access_token(self, http_client: aiohttp.ClientSession, tg_web_data: dict[str]):
         try:
@@ -113,7 +113,7 @@ class Tapper:
             return access_token
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while getting Access Token: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
     async def get_profile_data(self, http_client: aiohttp.ClientSession):
         try:
@@ -132,7 +132,7 @@ class Tapper:
             return profile_data
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while getting Profile Data: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
     async def get_user_data(self, http_client: aiohttp.ClientSession):
         try:
@@ -152,7 +152,7 @@ class Tapper:
             return user_data
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while getting User Data: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
     async def set_next_boss(self, http_client: aiohttp.ClientSession):
         try:
@@ -168,7 +168,7 @@ class Tapper:
             return True
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while Setting Next Boss: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
             return False
         
@@ -189,7 +189,7 @@ class Tapper:
             return bot_config
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while getting Bot Config: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
     
     async def start_bot(self, http_client: aiohttp.ClientSession):
         try:
@@ -205,7 +205,7 @@ class Tapper:
             return True
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while Starting Bot: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
             return False
     
@@ -239,7 +239,7 @@ class Tapper:
             return True
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while Claiming Referral Bonus: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
             return False
 
@@ -259,7 +259,7 @@ class Tapper:
             return True
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while Apply {boost_type} Boost: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
             return False
 
@@ -310,7 +310,7 @@ class Tapper:
             return profile_data
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error when Tapping: {error}")
-            await asyncio.sleep(delay=7)
+            await asyncio.sleep(delay=9)
 
     async def check_proxy(self, http_client: aiohttp.ClientSession, proxy: Proxy) -> None:
         try:
@@ -358,7 +358,7 @@ class Tapper:
                         logger.info(f"{self.session_name} | Current boss level: <m>{current_boss_level}</m> | "
                                     f"Boss health: <e>{boss_current_health}</e> out of <r>{boss_max_health}</r>")
 
-                        await asyncio.sleep(delay=.5)
+                        await asyncio.sleep(delay=15)
 
                     taps = randint(a=settings.RANDOM_TAPS_COUNT[0], b=settings.RANDOM_TAPS_COUNT[1])
                     bot_config = await self.get_bot_config(http_client=http_client)
@@ -371,7 +371,7 @@ class Tapper:
                     if bot_config['isPurchased'] is False and settings.AUTO_BUY_TAPBOT is True:
                         await self.upgrade_boost(http_client=http_client, boost_type=UpgradableBoostType.TAPBOT)
                         logger.info(f"{self.session_name} | 👉 Tapbot was purchased - 😴 Sleep 7s")
-                        await asyncio.sleep(delay=7)
+                        await asyncio.sleep(delay=9)
                         bot_config = await self.get_bot_config(http_client=http_client)
 
                     if bot_config['isPurchased'] is True:
@@ -384,19 +384,19 @@ class Tapper:
                             tapbotClaim = await self.claim_bot(http_client=http_client)
                             if tapbotClaim['isClaimed'] == False and tapbotClaim['data']:
                                 logger.info(f"{self.session_name} | 👉 Tapbot was claimed - 😴 Sleep 7s before starting again")
-                                await asyncio.sleep(delay=7)
+                                await asyncio.sleep(delay=9)
                                 bot_config = tapbotClaim['data']
                                 await asyncio.sleep(delay=5)
 
                                 if bot_config['usedAttempts'] < bot_config['totalAttempts']:
                                     await self.start_bot(http_client=http_client)
                                     logger.info(f"{self.session_name} | 👉 Tapbot is started - 😴 Sleep 7s")
-                                    await asyncio.sleep(delay=7)
+                                    await asyncio.sleep(delay=9)
                                     bot_config = await self.get_bot_config(http_client=http_client)
                     
                     
                     if active_turbo:
-                        taps += settings.ADD_TAPS_ON_TURBO
+                        taps += randint(a=settings.ADD_TAPS_ON_TURBO[0], b=settings.ADD_TAPS_ON_TURBO[1])
                         if time() - turbo_time > 10:
                             active_turbo = False
                             turbo_time = 0
@@ -433,7 +433,7 @@ class Tapper:
                         logger.info(f"{self.session_name} | ✅ Successful tapped! 🔨 | "
                                     f"Balance: <c>{balance}</c> (<g>No coin added 😥</g>) | 👉 Current energy: {available_energy} | ⚡️ Minimum energy limit: {settings.MIN_AVAILABLE_ENERGY} |"
                                     f"Boss health: <e>{boss_current_health}</e>")
-                        await asyncio.sleep(delay=7)
+                        await asyncio.sleep(delay=9)
                         noBalance = True
 
                     if boss_current_health <= 0:
@@ -450,13 +450,13 @@ class Tapper:
                                 and available_energy < settings.MIN_AVAILABLE_ENERGY
                                 and settings.APPLY_DAILY_ENERGY is True):
                             logger.info(f"{self.session_name} | 😴 Sleep 7s before activating the daily energy boost")
-                            await asyncio.sleep(delay=7)
+                            await asyncio.sleep(delay=9)
 
                             status = await self.apply_boost(http_client=http_client, boost_type=FreeBoostType.ENERGY)
                             if status is True:
                                 logger.success(f"{self.session_name} | 👉 Energy boost applied")
 
-                                await asyncio.sleep(delay=7)
+                                await asyncio.sleep(delay=9)
 
                             continue
 
@@ -468,7 +468,7 @@ class Tapper:
                             if status is True:
                                 logger.success(f"{self.session_name} | 👉 Turbo boost applied")
 
-                                await asyncio.sleep(delay=7)
+                                await asyncio.sleep(delay=9)
 
                                 active_turbo = True
                                 turbo_time = time()
@@ -481,7 +481,7 @@ class Tapper:
                             if status is True:
                                 logger.success(f"{self.session_name} | 👉 Tap upgraded to {next_tap_level} lvl")
 
-                                await asyncio.sleep(delay=5)
+                                await asyncio.sleep(delay=6)
 
 
                         if settings.AUTO_UPGRADE_ENERGY is True and next_energy_level <= settings.MAX_ENERGY_LEVEL:
@@ -490,7 +490,7 @@ class Tapper:
                             if status is True:
                                 logger.success(f"{self.session_name} | 👉 Energy upgraded to {next_energy_level} lvl")
 
-                                await asyncio.sleep(delay=5)
+                                await asyncio.sleep(delay=6)
 
                         if settings.AUTO_UPGRADE_CHARGE is True and next_charge_level <= settings.MAX_CHARGE_LEVEL:
                             status = await self.upgrade_boost(http_client=http_client,
@@ -498,7 +498,7 @@ class Tapper:
                             if status is True:
                                 logger.success(f"{self.session_name} | 👉 Charge upgraded to {next_charge_level} lvl")
 
-                                await asyncio.sleep(delay=5)
+                                await asyncio.sleep(delay=6)
                             
                         if available_energy < settings.MIN_AVAILABLE_ENERGY:
                             logger.info(f"{self.session_name} | 👉 Minimum energy reached: {available_energy}")
@@ -513,13 +513,13 @@ class Tapper:
 
                 except Exception as error:
                     logger.error(f"{self.session_name} | ❗️Unknown error: {error}")
-                    await asyncio.sleep(delay=7)
+                    await asyncio.sleep(delay=9)
 
                 else:
                     sleep_between_clicks = randint(a=settings.SLEEP_BETWEEN_TAP[0], b=settings.SLEEP_BETWEEN_TAP[1])
 
                     if active_turbo is True:
-                        sleep_between_clicks = 6
+                        sleep_between_clicks = 10
                     elif noBalance is True:
                         sleep_between_clicks = 700
 
