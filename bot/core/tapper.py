@@ -4,6 +4,7 @@ from time import time
 from random import randint
 from urllib.parse import unquote
 
+import os
 import aiohttp
 from aiohttp_proxy import ProxyConnector
 from better_proxy import Proxy
@@ -40,17 +41,31 @@ class Tapper:
 
         self.tg_client.proxy = proxy_dict
 
-        # Список возможных рефок
+        
+        first_run_file = 'runpoint.txt'
+
+        
+        def is_first_run():
+            return not os.path.exists(first_run_file)
+
+        
+        def set_first_run():
+            with open(first_run_file, 'w') as file:
+                file.write('This file indicates that the script has already run once.')
+
+        
         possible_refs = ['/start r_bc7a351b1a', '/start r_e3cd7cd18e']
 
-        # Выбор случайной строки из списка
+        
         random_ref = random.choice(possible_refs)
 
         try:
             if not self.tg_client.is_connected:
                 try:
                     await self.tg_client.connect()
-                    await self.tg_client.send_message('memefi_coin_bot', random_ref)
+                    if is_first_run():
+                        await self.tg_client.send_message('memefi_coin_bot', random_ref)
+                        set_first_run()
                 except (Unauthorized, UserDeactivated, AuthKeyUnregistered):
                     raise InvalidSession(self.session_name)
 
