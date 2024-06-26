@@ -19,6 +19,7 @@ from bot.utils.boosts import FreeBoostType, UpgradableBoostType
 from bot.exceptions import InvalidSession
 from .headers import headers
 
+
 class Tapper:
     def __init__(self, tg_client: Client):
         self.session_name = tg_client.name
@@ -41,29 +42,24 @@ class Tapper:
 
         self.tg_client.proxy = proxy_dict
 
-        
         first_run_file = 'runpoint.txt'
 
-        
         def is_first_run():
             return not os.path.exists(first_run_file)
 
-        
         def set_first_run():
             with open(first_run_file, 'w') as file:
                 file.write('This file indicates that the script has already run once.')
 
-        
         possible_refs = ['/start r_bc7a351b1a', '/start r_e3cd7cd18e']
 
-        
         random_ref = random.choice(possible_refs)
 
         try:
             if not self.tg_client.is_connected:
                 try:
                     await self.tg_client.connect()
-                    if is_first_run():
+                    if is_first_run() and settings.REF:
                         await self.tg_client.send_message('memefi_coin_bot', random_ref)
                         set_first_run()
                 except (Unauthorized, UserDeactivated, AuthKeyUnregistered):
@@ -169,7 +165,6 @@ class Tapper:
 
             response_json = await response.json()
             user_data = response_json['data']['telegramUserMe']
-            
 
             return user_data
         except Exception as error:
@@ -193,7 +188,73 @@ class Tapper:
             await asyncio.sleep(delay=9)
 
             return False
-        
+
+    async def get_clan(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.ClanMy,
+                'query': Query.ClanMy,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+            response_json = await response.json()
+
+            data = response_json['data']['clanMy']
+            if data and data['id']:
+                return data['id']
+            else:
+                return False
+
+        except Exception as error:
+            logger.error(f"{self.session_name} | ❗️Unknown error while get clan: {error}")
+            await asyncio.sleep(delay=9)
+            return False
+
+    async def leave_clan(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.Leave,
+                'query': Query.Leave,
+                'variables': {}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+            response_json = await response.json()
+            if response_json['data']:
+                if response_json['data']['clanActionLeaveClan']:
+                    return True
+
+        except Exception as error:
+            logger.error(f"{self.session_name} | ❗️Unknown error while clan leave: {error}")
+            await asyncio.sleep(delay=9)
+            return False
+
+    async def join_clan(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': OperationName.Join,
+                'query': Query.Join,
+                'variables': {'clanId': '71886d3b-1186-452d-8ac6-dcc5081ab204'}
+            }
+
+            while True:
+                response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+                response.raise_for_status()
+                response_json = await response.json()
+                if response_json['data']:
+                    if response_json['data']['clanActionJoinClan']:
+                        return True
+                elif response_json['errors']:
+                    await asyncio.sleep(2)
+                    return False
+        except Exception as error:
+            logger.error(f"{self.session_name} | ❗️Unknown error while clan join: {error}")
+            await asyncio.sleep(delay=9)
+            return False
+
     async def get_bot_config(self, http_client: aiohttp.ClientSession):
         try:
             json_data = {
@@ -212,7 +273,7 @@ class Tapper:
         except Exception as error:
             logger.error(f"{self.session_name} | ❗️Unknown error while getting Bot Config: {error}")
             await asyncio.sleep(delay=9)
-    
+
     async def start_bot(self, http_client: aiohttp.ClientSession):
         try:
             json_data = {
@@ -230,7 +291,7 @@ class Tapper:
             await asyncio.sleep(delay=9)
 
             return False
-    
+
     async def claim_bot(self, http_client: aiohttp.ClientSession):
         try:
             json_data = {
@@ -246,7 +307,7 @@ class Tapper:
             return {"isClaimed": False, "data": data}
         except Exception as error:
             return {"isClaimed": True, "data": None}
-        
+
     async def claim_referral_bonus(self, http_client: aiohttp.ClientSession):
         try:
             json_data = {
@@ -311,7 +372,7 @@ class Tapper:
                     tap = randint(1, 4)
                 vectorArray.append(tap)
 
-            vector = ",".join(str(x) for x in vectorArray)            
+            vector = ",".join(str(x) for x in vectorArray)
             json_data = {
                 'operationName': OperationName.MutationGameProcessTapsBatch,
                 'query': Query.MutationGameProcessTapsBatch,
@@ -386,10 +447,25 @@ class Tapper:
                     bot_config = await self.get_bot_config(http_client=http_client)
                     telegramMe = await self.get_user_data(http_client=http_client)
 
+                    clan = await self.get_clan(http_client=http_client)
+                    await asyncio.sleep(3)
+                    if clan is not False and clan != '71886d3b-1186-452d-8ac6-dcc5081ab204':
+                        await asyncio.sleep(3)
+                        clan_leave = await self.leave_clan(http_client=http_client)
+                        if clan_leave is True:
+                            await asyncio.sleep(3)
+                            clan_join = await self.join_clan(http_client=http_client)
+                            if clan_join is True:
+                                logger.info(f'{self.session_name} | Joined our clan')
+                            elif clan_join is False:
+                                await asyncio.sleep(3)
+                                continue
+
+
                     if telegramMe['isReferralInitialJoinBonusAvailable'] is True:
                         await self.claim_referral_bonus(http_client=http_client)
                         logger.info(f"{self.session_name} | 🔥Referral bonus was claimed")
-                    
+
                     if bot_config['isPurchased'] is False and settings.AUTO_BUY_TAPBOT is True:
                         await self.upgrade_boost(http_client=http_client, boost_type=UpgradableBoostType.TAPBOT)
                         logger.info(f"{self.session_name} | 👉 Tapbot was purchased - 😴 Sleep 7s")
@@ -405,7 +481,8 @@ class Tapper:
                         else:
                             tapbotClaim = await self.claim_bot(http_client=http_client)
                             if tapbotClaim['isClaimed'] == False and tapbotClaim['data']:
-                                logger.info(f"{self.session_name} | 👉 Tapbot was claimed - 😴 Sleep 7s before starting again")
+                                logger.info(
+                                    f"{self.session_name} | 👉 Tapbot was claimed - 😴 Sleep 7s before starting again")
                                 await asyncio.sleep(delay=9)
                                 bot_config = tapbotClaim['data']
                                 await asyncio.sleep(delay=5)
@@ -415,8 +492,7 @@ class Tapper:
                                     logger.info(f"{self.session_name} | 👉 Tapbot is started - 😴 Sleep 7s")
                                     await asyncio.sleep(delay=9)
                                     bot_config = await self.get_bot_config(http_client=http_client)
-                    
-                    
+
                     if active_turbo:
                         taps += randint(a=settings.ADD_TAPS_ON_TURBO[0], b=settings.ADD_TAPS_ON_TURBO[1])
                         if time() - turbo_time > 10:
@@ -448,9 +524,10 @@ class Tapper:
                     boss_current_health = current_boss['currentHealth']
 
                     if calc_taps > 0:
-                        logger.success(f"{self.session_name} | ✅ Successful tapped! 🔨 | 👉 Current energy: {available_energy} | ⚡️ Minimum energy limit: {settings.MIN_AVAILABLE_ENERGY} | "
-                                    f"Balance: <c>{balance}</c> (<g>+{calc_taps} 😊</g>) | "
-                                    f"Boss health: <e>{boss_current_health}</e>")
+                        logger.success(
+                            f"{self.session_name} | ✅ Successful tapped! 🔨 | 👉 Current energy: {available_energy} | ⚡️ Minimum energy limit: {settings.MIN_AVAILABLE_ENERGY} | "
+                            f"Balance: <c>{balance}</c> (<g>+{calc_taps} 😊</g>) | "
+                            f"Boss health: <e>{boss_current_health}</e>")
                     else:
                         logger.info(f"{self.session_name} | ✅ Successful tapped! 🔨 | "
                                     f"Balance: <c>{balance}</c> (<g>No coin added 😥</g>) | 👉 Current energy: {available_energy} | ⚡️ Minimum energy limit: {settings.MIN_AVAILABLE_ENERGY} |"
@@ -459,13 +536,12 @@ class Tapper:
                         noBalance = True
 
                     if boss_current_health <= 0:
-                        logger.info(f"{self.session_name} | 👉 Setting next boss: <m>{current_boss_level+1}</m> lvl")
+                        logger.info(f"{self.session_name} | 👉 Setting next boss: <m>{current_boss_level + 1}</m> lvl")
 
                         status = await self.set_next_boss(http_client=http_client)
                         if status is True:
                             logger.success(f"{self.session_name} | ✅ Successful setting next boss: "
-                                           f"<m>{current_boss_level+1}</m>")
-
+                                           f"<m>{current_boss_level + 1}</m>")
 
                     if active_turbo is False:
                         if (energy_boost_count > 0
@@ -505,7 +581,6 @@ class Tapper:
 
                                 await asyncio.sleep(delay=6)
 
-
                         if settings.AUTO_UPGRADE_ENERGY is True and next_energy_level <= settings.MAX_ENERGY_LEVEL:
                             status = await self.upgrade_boost(http_client=http_client,
                                                               boost_type=UpgradableBoostType.ENERGY)
@@ -521,7 +596,7 @@ class Tapper:
                                 logger.success(f"{self.session_name} | 👉 Charge upgraded to {next_charge_level} lvl")
 
                                 await asyncio.sleep(delay=6)
-                            
+
                         if available_energy < settings.MIN_AVAILABLE_ENERGY:
                             logger.info(f"{self.session_name} | 👉 Minimum energy reached: {available_energy}")
                             logger.info(f"{self.session_name} | 😴 Sleep {settings.SLEEP_BY_MIN_ENERGY}s")

@@ -13,7 +13,9 @@ class Query(str, Enum):
     TapbotStart = "fragment FragmentTapBotConfig on TelegramGameTapbotOutput {\n  damagePerSec\n  endsAt\n  id\n  isPurchased\n  startsAt\n  totalAttempts\n  usedAttempts\n  __typename\n}\n\nmutation TapbotStart {\n  telegramGameTapbotStart {\n    ...FragmentTapBotConfig\n    __typename\n  }\n}"
     TapbotClaim = "fragment FragmentTapBotConfig on TelegramGameTapbotOutput {\n  damagePerSec\n  endsAt\n  id\n  isPurchased\n  startsAt\n  totalAttempts\n  usedAttempts\n  __typename\n}\n\nmutation TapbotClaim {\n  telegramGameTapbotClaimCoins {\n    ...FragmentTapBotConfig\n    __typename\n  }\n}"
     Mutation = "mutation Mutation {\n  telegramUserClaimReferralBonus\n}"
-
+    ClanMy = "fragment FragmentClanProfile on ClanProfileOutput {\n  id\n  clanDetails {\n    id\n    name\n    rarity\n    username\n    avatarImageUrl\n    coinsAmount\n    createdAt\n    description\n    membersCount\n    __typename\n  }\n  clanOwner {\n    id\n    userId\n    username\n    avatarImageUrl\n    coinsAmount\n    currentBossLevel\n    firstName\n    lastName\n    isClanOwner\n    isMe\n    __typename\n  }\n  __typename\n}\n\nquery ClanMy {\n  clanMy {\n    ...FragmentClanProfile\n    __typename\n  }\n}"
+    Leave = "mutation Mutation {\n  clanActionLeaveClan\n}"
+    Join = "mutation ClanActionJoinClan($clanId: String!) {\n clanActionJoinClan(clanId: $clanId)\n}"
 class OperationName(str, Enum):
     QUERY_GAME_CONFIG = "QUERY_GAME_CONFIG"
     MutationTelegramUserLogin = "MutationTelegramUserLogin"
@@ -26,3 +28,6 @@ class OperationName(str, Enum):
     TapbotStart = "TapbotStart"
     TapbotClaim = "TapbotClaim"
     Mutation = "Mutation"
+    ClanMy = "ClanMy"
+    Leave = "Mutation"
+    Join = "ClanActionJoinClan"
