@@ -28,6 +28,8 @@ class Settings(BaseSettings):
     SLEEP_BETWEEN_TAP: list[int] = [19, 36]
 
     USE_PROXY_FROM_FILE: bool = False
+    
+    REF: bool = True
 
 
 settings = Settings()
