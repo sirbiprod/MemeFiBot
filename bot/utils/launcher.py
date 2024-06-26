@@ -30,7 +30,7 @@ Select an action:
 
 
 def get_session_names() -> list[str]:
-    session_names = glob.glob('sessions/*.session')
+    session_names = sorted(glob.glob('sessions/*.session'))
     session_names = [os.path.splitext(os.path.basename(file))[0] for file in session_names]
 
     return session_names
