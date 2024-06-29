@@ -27,6 +27,8 @@ class Settings(BaseSettings):
     RANDOM_TAPS_COUNT: list[int] = [7, 31]
     SLEEP_BETWEEN_TAP: list[int] = [19, 36]
 
+    AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION: bool = True
+
     USE_PROXY_FROM_FILE: bool = False
     
     REF: bool = True

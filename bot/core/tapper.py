@@ -3,6 +3,7 @@ import random
 from time import time
 from random import randint
 from urllib.parse import unquote
+import sys
 
 import os
 import aiohttp
@@ -523,6 +524,11 @@ class Tapper:
                     current_boss_level = current_boss['level']
                     boss_current_health = current_boss['currentHealth']
 
+                #thx Freddywhest
+                if profile_data['currentBoss']['level'] == 13 and profile_data['currentBoss']['currentHealth'] == 0:
+                    logger.info(f"{self.session_name} | 👉 <e>Finished defeating all bosses. No bosses left to fight.</e> | "
+                                    f"| Balance: <c>{balance}</c> (<g>No coin added 😥</g>)")
+                else:
                     if calc_taps > 0:
                         logger.success(
                             f"{self.session_name} | ✅ Successful tapped! 🔨 | 👉 Current energy: {available_energy} | ⚡️ Minimum energy limit: {settings.MIN_AVAILABLE_ENERGY} | "
