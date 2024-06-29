@@ -20,6 +20,7 @@
 | Random number of clicks per request                            |    ✅     |
 | Support tdata / pyrogram .session / telethon .session          |    ✅     |
 | Referral bonus claiming after first time registering           |    ✅     |
+| User Agent for each session                                    |    ✅     |
 
 ## [Settings](https://github.com/FreddyWhest/MemeFiBot/blob/main/.env-example)
 
@@ -41,6 +42,7 @@
 | **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (default [15, 25] )                                    |
 | **USE_PROXY_FROM_FILE**  | Whether to use proxy from the `bot/config/proxies.txt` file (True / False)                  |
 | **AUTO_BUY_TAPBOT**      | Whether to purchase tapbot automatically (True / False)                                     |
+| **AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION** | Whether you want to generate user agent for each session (True / False)|
 
 ## Installation
 

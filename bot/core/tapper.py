@@ -4,6 +4,7 @@ from time import time
 from random import randint
 from urllib.parse import unquote
 import sys
+import json
 
 import os
 import aiohttp
@@ -19,14 +20,55 @@ from bot.utils.graphql import Query, OperationName
 from bot.utils.boosts import FreeBoostType, UpgradableBoostType
 from bot.exceptions import InvalidSession
 from .headers import headers
+from .useragents import user_agents
 
 
 class Tapper:
     def __init__(self, tg_client: Client):
         self.session_name = tg_client.name
         self.tg_client = tg_client
+        self.session_dict = self.load_session_data()
 
         self.GRAPHQL_URL = 'https://api-gw-tg.memefi.club/graphql'
+
+        #Random User-Agent each session 
+        if settings.AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION == True:
+            headers['User-Agent'] = self.get_user_agent()
+        else:
+            headers['User-Agent'] = user_agents[0]
+
+    def get_random_user_agent(self):
+        """Returns a random user agent from the list."""
+        return random.choice(user_agents)
+
+    # Function to save session data to JSON file
+    def save_session_data(self, session_dict):
+        with open('session_user_agents.json', 'w') as file:
+            json.dump(session_dict, file, indent=4)
+
+    # Function to load session data from JSON file
+    def load_session_data(self):
+        try:
+            with open('session_user_agents.json', 'r') as file:
+                return json.load(file)
+        except FileNotFoundError:
+            return {}
+
+    def get_user_agent(self):
+        """Returns the user agent for a given session ID.
+        If no user agent is assigned to the session ID, assigns a new random one."""
+        if self.session_name in self.session_dict:
+            return self.session_dict[self.session_name]
+
+        # Generate a random user agent and check if it's already assigned to another session
+        logger.info(f"{self.session_name} | Generating new user agent...")
+        new_user_agent = self.get_random_user_agent()
+        while any(new_user_agent == agent for agent in self.session_dict.values()):
+            new_user_agent = self.get_random_user_agent()
+
+        self.session_dict[self.session_name] = new_user_agent
+        self.save_session_data(self.session_dict)
+        return new_user_agent
 
     async def get_tg_web_data(self, proxy: str | None):
         if proxy:
