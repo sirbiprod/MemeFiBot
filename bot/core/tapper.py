@@ -529,14 +529,17 @@ class Tapper:
                             f"Balance: <c>{balance}</c> (<g>+{calc_taps} 😊</g>) | "
                             f"Boss health: <e>{boss_current_health}</e>")
                     else:
-                        logger.info(f"{self.session_name} | ✅ Successful tapped! 🔨 | "
+                        logger.info(f"{self.session_name} | 🚫 Faild tapped! 🔨 | "
                                     f"Balance: <c>{balance}</c> (<g>No coin added 😥</g>) | 👉 Current energy: {available_energy} | ⚡️ Minimum energy limit: {settings.MIN_AVAILABLE_ENERGY} |"
                                     f"Boss health: <e>{boss_current_health}</e>")
-                        await asyncio.sleep(delay=9)
+                        logger.info(f"{self.session_name} | 😴 Sleep 10m")
+                        await asyncio.sleep(delay=600)
                         noBalance = True
 
                     if boss_current_health <= 0:
                         logger.info(f"{self.session_name} | 👉 Setting next boss: <m>{current_boss_level + 1}</m> lvl")
+                        logger.info(f"{self.session_name} | 😴 Sleep 15m")
+                        await asyncio.sleep(delay=900)
 
                         status = await self.set_next_boss(http_client=http_client)
                         if status is True:
@@ -554,7 +557,7 @@ class Tapper:
                             if status is True:
                                 logger.success(f"{self.session_name} | 👉 Energy boost applied")
 
-                                await asyncio.sleep(delay=9)
+                                await asyncio.sleep(delay=3)
 
                             continue
 
