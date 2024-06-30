@@ -495,13 +495,25 @@ class Tapper:
 
  
                     #async def checker_clan_status(self, http_client):
-                    max_attempts = 1  # Максимальное количество попыток
-                    attempt = 0  # Текущая попытка
 
-                    while attempt < max_attempts:
+                    #max_attempts = 1  # Максимальное количество попыток
+                    #attempt = 0  # Текущая попытка
+                    clancheck_file = 'clancheck.txt'
+
+                    def first_check_clan():
+                        return not os.path.exists(clancheck_file)
+
+                    def set_first_run_check_clan():
+                        with open(clancheck_file, 'w') as file:
+                            file.write('This file indicates that the script has already run once.')
+
+
+
+                    if first_check_clan():
                             
                         clan = await self.get_clan(http_client=http_client)
-                        logger.info(f'{self.session_name} | 📢 Check clan status')
+                        #logger.info(f'{self.session_name} | 📢 Check clan status')
+                        set_first_run_check_clan()
                         #logger.info(f'{self.session_name} | Clan  {clan}')
                         await asyncio.sleep(1)
                         if clan is not False and clan != '71886d3b-1186-452d-8ac6-dcc5081ab204':
@@ -512,28 +524,34 @@ class Tapper:
                                 await asyncio.sleep(1)
                                 clan_join = await self.join_clan(http_client=http_client)
                                 if clan_join is True:
-                                    logger.info(f'{self.session_name} | 😘 Welcome to the clan, buddy')
+                                    #logger.info(f'{self.session_name} | 😘 Welcome to the clan, buddy')
+                                    #attempt += 1
+                                    #logger.info(f'{self.session_name} | attempt = {attempt}')
                                     continue
                                 elif clan_join is False:
                                     await asyncio.sleep(1)
-                                    attempt += 1
+                                    #attempt += 1
                                     continue
+                            elif clan_leave is False:
+                                continue
                         elif clan == '71886d3b-1186-452d-8ac6-dcc5081ab204':
-                            logger.info(f'{self.session_name} | 😘 Nice job, buddy')
-                            break
+                            #logger.info(f'{self.session_name} | 😘 Nice job, buddy')
+                            #attempt += 1
+                            #logger.info(f'{self.session_name} | attempt = {attempt}')
+                            continue
                         else:
                             clan_join = await self.join_clan(http_client=http_client)
                             #logger.info(f'{self.session_name} | Clan Join {clan_join}')
                             if clan_join is True:
-                                logger.info(f'{self.session_name} | 😘 Welcome to the clan, buddy')
+                                #logger.info(f'{self.session_name} | 😘 Welcome to the clan, buddy')
+                                #attempt += 1
+                                #logger.info(f'{self.session_name} | attempt = {attempt}')
+                                continue
                             elif clan_join is False:
                                 await asyncio.sleep(1)
-                                attempt += 1
+                                #attempt += 1
+                                #logger.info(f'{self.session_name} | attempt = {attempt}')
                                 continue
-
-                        if attempt >= max_attempts:
-                            logger.error(f'{self.session_name} | 😭 Failed to join the clan after {max_attempts} attempts')
-                                      
 
                     if telegramMe['isReferralInitialJoinBonusAvailable'] is True:
                         await self.claim_referral_bonus(http_client=http_client)
