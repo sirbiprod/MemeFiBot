@@ -1,6 +1,9 @@
 #!/bin/bash
 # thx @AlexKrutoy
 
+#Проверка обновления репозитория
+git pull -allow-unrelated-histories
+
 # Проверка на наличие папки venv
 if [ ! -d "venv" ]; then
     echo "Creating virtual environment..."
