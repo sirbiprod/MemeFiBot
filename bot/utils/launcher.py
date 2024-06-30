@@ -24,8 +24,8 @@ start_text = """
                                                                            
 Select an action:
 
-    1. Create session
-    2. Run bot
+    1. Run bot
+    2. Create session
 """
 
 
@@ -91,9 +91,9 @@ async def process() -> None:
                 break
 
     if action == 1:
-        await register_sessions()
-    elif action == 2:
         tg_clients = await get_tg_clients()
+    elif action == 2:
+        await register_sessions()
 
         await run_tasks(tg_clients=tg_clients)
 
