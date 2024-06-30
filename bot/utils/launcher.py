@@ -92,10 +92,10 @@ async def process() -> None:
 
     if action == 1:
         tg_clients = await get_tg_clients()
+        await run_tasks(tg_clients=tg_clients)
     elif action == 2:
         await register_sessions()
 
-        await run_tasks(tg_clients=tg_clients)
 
 
 async def run_tasks(tg_clients: list[Client]):
