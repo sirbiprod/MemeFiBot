@@ -568,8 +568,7 @@ class Tapper:
 
                 #thx Freddywhest
                 if profile_data['currentBoss']['level'] == 13 and profile_data['currentBoss']['currentHealth'] == 0:
-                    logger.info(f"{self.session_name} | 👉 <e>Finished defeating all bosses. No bosses left to fight.</e> | "
-                                    f"| Balance: <c>{balance}</c> (<g>No coin added 😥</g>)")
+                    logger.info(f"{self.session_name} | 👉 <e>No bosses left to fight.</e> | Balance: <c>{balance}</c>")
                 else:
                     if calc_taps > 0:
                         logger.success(
