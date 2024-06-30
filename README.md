@@ -5,7 +5,7 @@
 
 # Use Python 3.10
 
-#If you have used another bot before or have a 'NoneType' error, you will need to wait 12-24 hours before running the bot again
+If you have used another bot before or have a 'NoneType' error, you will need to wait 12-24 hours before running the bot again
 
 ## Functionality
 
