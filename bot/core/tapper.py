@@ -232,6 +232,7 @@ class Tapper:
 
             return False
 
+
     async def get_clan(self, http_client: aiohttp.ClientSession):
         try:
             json_data = {
@@ -239,6 +240,8 @@ class Tapper:
                 'query': Query.ClanMy,
                 'variables': {}
             }
+
+            #logger.info(f'{self.session_name} | 📢 Check clan status')
 
             response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
             response.raise_for_status()
@@ -294,7 +297,7 @@ class Tapper:
                     await asyncio.sleep(2)
                     return False
         except Exception as error:
-            logger.error(f"{self.session_name} | ❗️Unknown error while clan join: {error}")
+            logger.error(f"{self.session_name} | ❗️ Unknown error while clan join: {error}")
             await asyncio.sleep(delay=9)
             return False
 
@@ -314,7 +317,7 @@ class Tapper:
 
             return bot_config
         except Exception as error:
-            logger.error(f"{self.session_name} | ❗️Unknown error while getting Bot Config: {error}")
+            logger.error(f"{self.session_name} | ❗️ Unknown error while getting Bot Config: {error}")
             await asyncio.sleep(delay=9)
 
     async def start_bot(self, http_client: aiohttp.ClientSession):
@@ -330,7 +333,7 @@ class Tapper:
 
             return True
         except Exception as error:
-            logger.error(f"{self.session_name} | ❗️Unknown error while Starting Bot: {error}")
+            logger.error(f"{self.session_name} | ❗️ Unknown error while Starting Bot: {error}")
             await asyncio.sleep(delay=9)
 
             return False
@@ -364,7 +367,7 @@ class Tapper:
 
             return True
         except Exception as error:
-            logger.error(f"{self.session_name} | ❗️Unknown error while Claiming Referral Bonus: {error}")
+            logger.error(f"{self.session_name} | ❗️ Unknown error while Claiming Referral Bonus: {error}")
             await asyncio.sleep(delay=9)
 
             return False
@@ -384,7 +387,7 @@ class Tapper:
 
             return True
         except Exception as error:
-            logger.error(f"{self.session_name} | ❗️Unknown error while Apply {boost_type} Boost: {error}")
+            logger.error(f"{self.session_name} | ❗️ Unknown error while Apply {boost_type} Boost: {error}")
             await asyncio.sleep(delay=9)
 
             return False
@@ -435,7 +438,7 @@ class Tapper:
             profile_data = response_json['data']['telegramGameProcessTapsBatch']
             return profile_data
         except Exception as error:
-            logger.error(f"{self.session_name} | ❗️Unknown error when Tapping: {error}")
+            logger.error(f"{self.session_name} | ❗️ Unknown error when Tapping: {error}")
             await asyncio.sleep(delay=9)
 
     async def check_proxy(self, http_client: aiohttp.ClientSession, proxy: Proxy) -> None:
@@ -490,20 +493,47 @@ class Tapper:
                     bot_config = await self.get_bot_config(http_client=http_client)
                     telegramMe = await self.get_user_data(http_client=http_client)
 
-                    clan = await self.get_clan(http_client=http_client)
-                    await asyncio.sleep(3)
-                    if clan is not False and clan != '71886d3b-1186-452d-8ac6-dcc5081ab204':
-                        await asyncio.sleep(3)
-                        clan_leave = await self.leave_clan(http_client=http_client)
-                        if clan_leave is True:
-                            await asyncio.sleep(3)
+ 
+                    #async def checker_clan_status(self, http_client):
+                    max_attempts = 1  # Максимальное количество попыток
+                    attempt = 0  # Текущая попытка
+
+                    while attempt < max_attempts:
+                            
+                        clan = await self.get_clan(http_client=http_client)
+                        logger.info(f'{self.session_name} | 📢 Check clan status')
+                        #logger.info(f'{self.session_name} | Clan  {clan}')
+                        await asyncio.sleep(1)
+                        if clan is not False and clan != '71886d3b-1186-452d-8ac6-dcc5081ab204':
+                            await asyncio.sleep(1)
+                            clan_leave = await self.leave_clan(http_client=http_client)
+                            #logger.info(f'{self.session_name} | Clan Leave {clan_leave}')
+                            if clan_leave is True:
+                                await asyncio.sleep(1)
+                                clan_join = await self.join_clan(http_client=http_client)
+                                if clan_join is True:
+                                    logger.info(f'{self.session_name} | 😘 Welcome to the clan, buddy')
+                                    continue
+                                elif clan_join is False:
+                                    await asyncio.sleep(1)
+                                    attempt += 1
+                                    continue
+                        elif clan == '71886d3b-1186-452d-8ac6-dcc5081ab204':
+                            logger.info(f'{self.session_name} | 😘 Nice job, buddy')
+                            break
+                        else:
                             clan_join = await self.join_clan(http_client=http_client)
+                            #logger.info(f'{self.session_name} | Clan Join {clan_join}')
                             if clan_join is True:
-                                logger.info(f'{self.session_name} | Joined our clan')
+                                logger.info(f'{self.session_name} | 😘 Welcome to the clan, buddy')
                             elif clan_join is False:
-                                await asyncio.sleep(3)
+                                await asyncio.sleep(1)
+                                attempt += 1
                                 continue
 
+                        if attempt >= max_attempts:
+                            logger.error(f'{self.session_name} | 😭 Failed to join the clan after {max_attempts} attempts')
+                                      
 
                     if telegramMe['isReferralInitialJoinBonusAvailable'] is True:
                         await self.claim_referral_bonus(http_client=http_client)
