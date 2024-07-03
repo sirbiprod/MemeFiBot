@@ -2,7 +2,7 @@
 # thx @AlexKrutoy
 
 #Проверка обновления репозитория
-git pull
+git pull --allow-unrelated-histories #принудительное обновление
 
 # Проверка на наличие папки venv
 if [ ! -d "venv" ]; then
