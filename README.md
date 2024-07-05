@@ -45,7 +45,7 @@ If you have used another bot before or have a 'NoneType' error, you will need to
 | **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (default [15, 25] )                                    |
 | **USE_PROXY_FROM_FILE**  | Whether to use proxy from the `bot/config/proxies.txt` file (True / False)                  |
 | **AUTO_BUY_TAPBOT**      | Whether to purchase tapbot automatically (True / False)                                     |
-| **AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION** | Whether you want to generate user agent for each session (True / False)|
+
 
 ## Installation
 

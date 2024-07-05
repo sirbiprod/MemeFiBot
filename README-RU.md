@@ -46,7 +46,7 @@ https://github.com/sirbiprod/MemeFiBot/issues/3
 | **SLEEP_BETWEEN_TAP**    						| Рандомная задержка между тапами в секундах (напр. 10,25)                                    |
 | **USE_PROXY_FROM_FILE**  						| Использовать-ли прокси из файла `bot/config/proxies.txt` (True / False)                     |
 | **AUTO_BUY_TAPBOT**      						| Стоит ли покупать Tapbot автоматически (True/False)                                         |
-| **AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION** | Уникальный User-Agent (True/False)                                     |
+
 
 ## Установка
 
