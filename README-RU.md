@@ -4,7 +4,10 @@
 
 ![img1](./.github/image/hero-image.png)
 
-# Используйте Python 3.10 или более раннюю версию.
+# Используйте Python 3.10 и ПРОКСИ (!!!)
+
+If you have used another bot before or have a 'NoneType' error, you will need to wait 12-24 hours before running the bot again more 
+https://github.com/sirbiprod/MemeFiBot/issues/3
 
 ## Функционал
 
