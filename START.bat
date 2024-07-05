@@ -1,5 +1,6 @@
 @echo off
-git pull
+::принудительное обновление
+git pull --allow-unrelated-histories 
 echo Activating virtual environment...
 call venv\Scripts\activate
 echo Starting the bot...
