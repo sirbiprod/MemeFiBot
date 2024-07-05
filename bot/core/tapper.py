@@ -20,55 +20,68 @@ from bot.utils.graphql import Query, OperationName
 from bot.utils.boosts import FreeBoostType, UpgradableBoostType
 from bot.exceptions import InvalidSession
 from .headers import headers
-from .useragents import user_agents
+from .agents import generate_random_user_agent
 
 
 class Tapper:
     def __init__(self, tg_client: Client):
         self.session_name = tg_client.name
         self.tg_client = tg_client
-        self.session_dict = self.load_session_data()
+        #self.session_dict = self.load_session_data()
 
         self.GRAPHQL_URL = 'https://api-gw-tg.memefi.club/graphql'
 
-        #Random User-Agent each session 
-        if settings.AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION == True:
-            headers['User-Agent'] = self.get_user_agent()
-        else:
-            headers['User-Agent'] = user_agents[0]
+        self.session_ug_dict = self.load_user_agents() or []
 
-    def get_random_user_agent(self):
-        """Returns a random user agent from the list."""
-        return random.choice(user_agents)
+        headers['User-Agent'] = self.check_user_agent()
 
-    # Function to save session data to JSON file
-    def save_session_data(self, session_dict):
-        with open('session_user_agents.json', 'w') as file:
-            json.dump(session_dict, file, indent=4)
+    async def generate_random_user_agent(self):
+        return generate_random_user_agent(device_type='android', browser_type='chrome')
 
-    # Function to load session data from JSON file
-    def load_session_data(self):
+    def save_user_agent(self):
+        user_agents_file_name = "user_agents.json"
+
+        if not any(session['session_name'] == self.session_name for session in self.session_ug_dict):
+            user_agent_str = generate_random_user_agent()
+
+            self.session_ug_dict.append({
+                'session_name': self.session_name,
+                'user_agent': user_agent_str})
+
+            with open(user_agents_file_name, 'w') as user_agents:
+                json.dump(self.session_ug_dict, user_agents, indent=4)
+
+            logger.info(f"<light-yellow>{self.session_name}</light-yellow> | User agent saved successfully")
+
+            return user_agent_str
+
+    def load_user_agents(self):
+        user_agents_file_name = "user_agents.json"
+
         try:
-            with open('session_user_agents.json', 'r') as file:
-                return json.load(file)
+            with open(user_agents_file_name, 'r') as user_agents:
+                session_data = json.load(user_agents)
+                if isinstance(session_data, list):
+                    return session_data
+
         except FileNotFoundError:
-            return {}
+            logger.warning("User agents file not found, creating...")
 
-    def get_user_agent(self):
-        """Returns the user agent for a given session ID.
-        If no user agent is assigned to the session ID, assigns a new random one."""
-        if self.session_name in self.session_dict:
-            return self.session_dict[self.session_name]
+        except json.JSONDecodeError:
+            logger.warning("User agents file is empty or corrupted.")
 
-        # Generate a random user agent and check if it's already assigned to another session
-        logger.info(f"{self.session_name} | Generating new user agent...")
-        new_user_agent = self.get_random_user_agent()
-        while any(new_user_agent == agent for agent in self.session_dict.values()):
-            new_user_agent = self.get_random_user_agent()
+        return []
 
-        self.session_dict[self.session_name] = new_user_agent
-        self.save_session_data(self.session_dict)
-        return new_user_agent
+    def check_user_agent(self):
+        load = next(
+            (session['user_agent'] for session in self.session_ug_dict if session['session_name'] == self.session_name),
+            None)
+
+        if load is None:
+            return self.save_user_agent()
+
+        return load
+
 
     async def get_tg_web_data(self, proxy: str | None):
         if proxy:
@@ -468,10 +481,14 @@ class Tapper:
                         tg_web_data = await self.get_tg_web_data(proxy=proxy)
                         access_token = await self.get_access_token(http_client=http_client, tg_web_data=tg_web_data)
 
-                        http_client.headers["Authorization"] = f"Bearer {access_token}"
-                        headers["Authorization"] = f"Bearer {access_token}"
+                        http_client.headers["authorization"] = f"Bearer {access_token}"
+                        headers["authorization"] = f"Bearer {access_token}"
 
                         access_token_created_time = time()
+                    #else:
+                    #    await asyncio.sleep(delay=300)
+                    #    continue
+
 
                         profile_data = await self.get_profile_data(http_client=http_client)
 
@@ -488,6 +505,8 @@ class Tapper:
                                     f"Boss health: <e>{boss_current_health}</e> out of <r>{boss_max_health}</r>")
 
                         await asyncio.sleep(delay=15)
+
+                        continue
 
                     taps = randint(a=settings.RANDOM_TAPS_COUNT[0], b=settings.RANDOM_TAPS_COUNT[1])
                     bot_config = await self.get_bot_config(http_client=http_client)
