@@ -62,5 +62,5 @@ def generate_random_user_agent(device_type='android', browser_type='chrome'):
     return None
 
 # Example usage
-for _ in range(5):
-    print(generate_random_user_agent())
+#for _ in range(5):
+#    print(generate_random_user_agent())
