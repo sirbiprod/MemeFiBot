@@ -3,7 +3,7 @@
 
 ![img1](./.github/image/hero-image.png)
 
-# Use Python 3.10 and PROXY (!!!)
+# Use Python 3.10 and PROXY (1 acc - 1 proxy)
 
 If you have used another bot before or have a 'NoneType' or 403 error, you will need to wait 12-24 hours before running the bot again 
 [more](https://github.com/sirbiprod/MemeFiBot/issues/3)
