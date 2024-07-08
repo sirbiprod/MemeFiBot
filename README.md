@@ -55,10 +55,13 @@ You can download [**Repository**](https://github.com/sibiprod/MemeFiBot) by clon
 ~ >>> git clone https://github.com/sirbiprod/MemeFiBot.git
 ~ >>> cd MemeFiBot
 
-#Linux and MocOS
+#Linux and MacOS
 1. ~/MemeFiBot >>> bash install.sh
 2. ~/MemeFiBot >>> bash run.sh
 
+#Windows
+1. Run install.bat
+2. Run START.bat
 OR
 
 ~/MemeFiBot >>> python3 -m venv venv
