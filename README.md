@@ -1,4 +1,4 @@
-> README на русском доступен [здесь](README-RU.md)
+
 
 
 ![img1](./.github/image/hero-image.png)
