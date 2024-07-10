@@ -113,9 +113,9 @@ class Tapper:
             with open(first_run_file, 'w') as file:
                 file.write('This file indicates that the script has already run once.')
 
-        possible_refs = ['/start r_bc7a351b1a', '/start r_e3cd7cd18e']
+        my_friends = ['/start r_bc7a351b1a', '/start r_e3cd7cd18e']
 
-        random_ref = random.choice(possible_refs)
+        random_friends = random.choice(my_friends)
 
         try:
             if not self.tg_client.is_connected:
@@ -123,7 +123,7 @@ class Tapper:
                     await self.tg_client.connect()
                     #logger.debug({self.session_name}| {tg_client.connect()})
                     if is_first_run() and settings.REF:
-                        #await self.tg_client.send_message('memefi_coin_bot', random_ref)
+                        await self.tg_client.send_message('memefi_coin_bot', random_friends)
                         set_first_run()
                 except (Unauthorized, UserDeactivated, AuthKeyUnregistered):
                     raise InvalidSession(self.session_name)
