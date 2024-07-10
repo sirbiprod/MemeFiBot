@@ -7,6 +7,8 @@
 
 If you have used another bot before or have a 'NoneType' or 403 error, you will need to wait 12-24 hours before running the bot again 
 [more](https://github.com/sirbiprod/MemeFiBot/issues/3)
+upd: update this bot (just restart or use command:)
+> git pull
 
 ## Functionality
 
