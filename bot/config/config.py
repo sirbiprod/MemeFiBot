@@ -33,5 +33,7 @@ class Settings(BaseSettings):
     
     REF: bool = True
 
+    EMERGENCY_STOP: bool = True
+
 
 settings = Settings()

@@ -16,6 +16,13 @@ class Query(str, Enum):
     ClanMy = "fragment FragmentClanProfile on ClanProfileOutput {\n id\n clanDetails {\n id\n name\n rarity\n username\n avatarImageUrl\n coinsAmount\n createdAt\n description\n membersCount\n __typename\n }\n clanOwner {\n id\n userId\n username\n avatarImageUrl\n coinsAmount\n currentBossLevel\n firstName\n lastName\n isClanOwner\n isMe\n __typename\n }\n __typename\n}\n\nquery ClanMy {\n clanMy {\n ...FragmentClanProfile\n __typename\n }\n}"
     Leave = "mutation Mutation {\n  clanActionLeaveClan\n}"
     Join = "mutation ClanActionJoinClan($clanId: String!) {\n clanActionJoinClan(clanId: $clanId)\n}"
+    #сейчас не используются
+
+    #TelegramMemefiWalletConfig = "query TelegramMemefiWalletConfig {\n telegramMemefiWalletConfig {\n rpcUrls\n memefiContractAddress\n listingDate\n __typename\n }\n}"
+    #TelegramMemefiWallet = "query TelegramMemefiWallet {\n telegramMemefiWallet {\n walletAddress\n dropMemefiAmountWei\n signedTransaction {\n contractAddress\n functionName\n contractType\n deadline\n nativeTokenValue\n chainId\n execTransactionValuesStringified\n __typename\n }\n __typename\n }\n}"
+    #PaymentsTokens = "query PaymentsTokens {\n paymentsTokens {\n paymentToken\n tokenAddress\n toUsdRate\n __typename\n }\n}"
+    
+
     #clanProfile = "fragment FragmentClanProfile on ClanProfileOutput {\n id\n clanDetails {\n id\n name\n rarity\n username\n avatarImageUrl\n coinsAmount\n createdAt\n description\n membersCount\n __typename\n }\n clanOwner {\n id\n userId\n username\n avatarImageUrl\n coinsAmount\n currentBossLevel\n firstName\n lastName\n isClanOwner\n isMe\n __typename\n }\n __typename\n}\n\nquery clanProfile($clanId: String!) {\n clanProfile(clanId: $clanId) {\n ...FragmentClanProfile\n __typename\n }\n}"
     #ClanMembersPaginated = "query ClanMembersPaginated($clanId: String!, $pagination: PaginationInput!) {\n clanMembersPaginated(clanId: $clanId, pagination: $pagination) {\n items {\n id\n userId\n username\n firstName\n lastName\n avatarImageUrl\n coinsAmount\n currentBossLevel\n isClanOwner\n isMe\n __typename\n }\n meta {\n currentPage\n itemCount\n itemsPerPage\n totalItems\n totalPages\n __typename\n }\n __typename\n }\n}"
 
@@ -34,5 +41,10 @@ class OperationName(str, Enum):
     ClanMy = "ClanMy"
     Leave = "Mutation"
     Join = "ClanActionJoinClan"
+    #сейчас не используются
+    #TelegramMemefiWalletConfig = "TelegramMemefiWalletConfig"
+    #TelegramMemefiWallet = "TelegramMemefiWallet"
+    #PaymentsTokens = "PaymentsTokens"
+    
     #clanProfile = "clanProfile"
     #ClanMembersPaginated = "ClanMembersPaginated"

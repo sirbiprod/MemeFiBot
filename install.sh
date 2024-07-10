@@ -37,6 +37,9 @@ python3 -m venv venv
 echo "Activating virtual environment..."
 source venv/bin/activate
 
+git config merge.ours.name "Keep ours merge"
+git config merge.ours.driver true
+
 echo "Installing dependencies..."
 pip install -r requirements.txt
 
