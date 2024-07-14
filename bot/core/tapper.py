@@ -23,7 +23,7 @@ from bot.exceptions import InvalidSession
 from .headers import headers
 from .agents import generate_random_user_agent
 
-from bot.exceptions import InvalidProtocol
+#from bot.exceptions import InvalidProtocol
 from datetime import datetime
 
 
@@ -214,8 +214,8 @@ class Tapper:
             response_json = response.json()
 
             #emerg stop
-            if 'errors' in response_json:
-                raise InvalidProtocol(f'get_profile_data msg: {response_json["errors"][0]["message"]}')
+            #if 'errors' in response_json:
+            #    raise InvalidProtocol(f'get_profile_data msg: {response_json["errors"][0]["message"]}')
 
             profile_data = response_json['data']['telegramGameGetConfig']
 
@@ -440,8 +440,8 @@ class Tapper:
 
             response_json = response.json()
 
-            if 'errors' in response_json:
-                raise InvalidProtocol(f'upgrade_boost msg: {response_json["errors"][0]["message"]}')
+            #if 'errors' in response_json:
+            #    raise InvalidProtocol(f'upgrade_boost msg: {response_json["errors"][0]["message"]}')
 
             return True
         except Exception:
@@ -474,8 +474,8 @@ class Tapper:
 
             response_json = response.json()
 
-            if 'errors' in response_json:
-                raise InvalidProtocol(f'send_taps msg: {response_json["errors"][0]["message"]}')
+            #if 'errors' in response_json:
+            #    raise InvalidProtocol(f'send_taps msg: {response_json["errors"][0]["message"]}')
 
             profile_data = response_json['data']['telegramGameProcessTapsBatch']
             return profile_data
@@ -814,11 +814,11 @@ class Tapper:
 
                         continue
 
-            except InvalidProtocol as error:
-                if settings.EMERGENCY_STOP is True:
-                    raise error
-                else:
-                    logger.error(f"{self.session_name} | Warning! Invalid protocol detected in {error}")
+            #except InvalidProtocol as error:
+            #    if settings.EMERGENCY_STOP is True:
+            #        raise error
+            #    else:
+            #        logger.error(f"{self.session_name} | Warning! Invalid protocol detected in {error}")
 
 
             except InvalidSession as error:
@@ -846,5 +846,5 @@ async def run_tapper(tg_client: Client, proxy: str | None):
         await Tapper(tg_client=tg_client).run(proxy=proxy)
     except InvalidSession:
         logger.error(f"{tg_client.name} | ❗️Invalid Session")
-    except InvalidProtocol as error:
-        logger.error(f"{tg_client.name} | ❗️Invalid protocol detected at {error}")
+    #except InvalidProtocol as error:
+    #    logger.error(f"{tg_client.name} | ❗️Invalid protocol detected at {error}")
