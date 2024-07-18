@@ -187,7 +187,7 @@ class Tapper:
         try:
             response = http_client.post(url=self.GRAPHQL_URL, json=tg_web_data)
             #logger.debug(f"get_access_token | {self.session_name}| {response}")
-            response.raise_for_status()
+            #response.raise_for_status() #очредной фикс nonetype special for hiddencode
 
             response_json = response.json()
             access_token = response_json['data']['telegramUserLogin']['access_token']
@@ -209,7 +209,7 @@ class Tapper:
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
             #logger.debug({self.session_name} | {response})
-            response.raise_for_status()
+            #response.raise_for_status()
 
             response_json = response.json()
 
@@ -235,7 +235,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             response_json = response.json()
             user_data = response_json['data']['telegramUserMe']
@@ -256,7 +256,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             return True
         except Exception as error:
@@ -277,7 +277,7 @@ class Tapper:
             #logger.info(f'{self.session_name} | 📢 Check clan status')
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
             response_json = response.json()
 
             data = response_json['data']['clanMy']
@@ -300,7 +300,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
             response_json = response.json()
             if response_json['data']:
                 if response_json['data']['clanActionLeaveClan']:
@@ -321,7 +321,7 @@ class Tapper:
 
             while True:
                 response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-                response.raise_for_status()
+                #response.raise_for_status()
                 response_json = response.json()
                 if response_json['data']:
                     if response_json['data']['clanActionJoinClan']:
@@ -343,7 +343,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             response_json = response.json()
             bot_config = response_json['data']['telegramGameTapbotGetConfig']
@@ -362,7 +362,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             return True
         except Exception as error:
@@ -380,7 +380,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
             response_json = response.json()
             data = response_json['data']["telegramGameTapbotClaim"]
             return {"isClaimed": False, "data": data}
@@ -396,7 +396,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             return True
         except Exception as error:
@@ -416,7 +416,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             return True
         except Exception as error:
@@ -436,7 +436,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             response_json = response.json()
 
@@ -470,7 +470,7 @@ class Tapper:
             }
 
             response = http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            response.raise_for_status()
+            #response.raise_for_status()
 
             response_json = response.json()
 
