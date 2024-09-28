@@ -659,15 +659,22 @@ class Tapper:
                                                           settings.RANDOM_DELAY_IN_RUN[1])
                             logger.info(f"{self.session_name} | Bot will start in <y>{random_delay}s</y>")
                             await asyncio.sleep(random_delay)
-                            linea_wallet = await self.wallet_check(http_client=http_client)
-                            balance_eth = await self.get_linea_wallet_balance(http_client=http_client,
-                                                                              linea_wallet=linea_wallet)
-                            eth_price = await self.get_eth_price(http_client=http_client, balance_eth=balance_eth)
-                            logger.info(f"{self.session_name} | 💳 Linea wallet address: <y>{linea_wallet}</y>")
-                            if settings.LINEA_API:
-                                logger.info(f"{self.session_name} | ETH Balance: <g>{balance_eth}</g> | "
-                                            f"USD Balance: <e>{eth_price}</e>")
-                                await asyncio.sleep(delay=1)
+
+                            if settings.LINEA_WALLET is True:
+                                linea_wallet = await self.wallet_check(http_client=http_client)
+                                logger.info(f"{self.session_name} | 💳 Linea wallet address: <y>{linea_wallet}</y>")
+                                if settings.LINEA_SHOW_BALANCE:
+                                    if settings.LINEA_API != '':
+                                        balance_eth = await self.get_linea_wallet_balance(http_client=http_client,
+                                                                                          linea_wallet=linea_wallet)
+                                        eth_price = await self.get_eth_price(http_client=http_client,
+                                                                             balance_eth=balance_eth)
+                                        logger.info(f"{self.session_name} | ETH Balance: <g>{balance_eth}</g> | "
+                                                    f"USD Balance: <e>{eth_price}</e>")
+                                    elif settings.LINEA_API == '':
+                                        logger.info(f"{self.session_name} | "
+                                                    f"💵 LINEA_API must be specified to show the balance")
+                                        await asyncio.sleep(delay=3)
 
                         if boss_current_health == 0:
                             logger.info(

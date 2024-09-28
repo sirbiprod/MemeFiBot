@@ -1,6 +1,8 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
+
     model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
 
     API_ID: int
@@ -37,8 +39,9 @@ class Settings(BaseSettings):
     VALUE_SPIN: int = 1
     LOTTERY_INFO: bool = True
 
-    LINEA_BALANCE: bool = True
-    LINEA_API: str
+    LINEA_WALLET: bool = True
+    LINEA_SHOW_BALANCE: bool = True
+    LINEA_API: str = ''
 
     USE_RANDOM_DELAY_IN_RUN: bool = True
     RANDOM_DELAY_IN_RUN: list[int] = [3, 15]
