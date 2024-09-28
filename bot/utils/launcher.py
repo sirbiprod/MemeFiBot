@@ -6,7 +6,7 @@ from itertools import cycle
 
 import platform
 import sys
-import distro
+#import distro
 
 from pyrogram import Client
 from better_proxy import Proxy
@@ -18,7 +18,7 @@ from bot.core.registrator import register_sessions
 
 
 start_text = """
-
+                               
 ███╗   ███╗███████╗███╗   ███╗███████╗███████╗██╗██████╗  ██████╗ ████████╗
 ████╗ ████║██╔════╝████╗ ████║██╔════╝██╔════╝██║██╔══██╗██╔═══██╗╚══██╔══╝
 ██╔████╔██║█████╗  ██╔████╔██║█████╗  █████╗  ██║██████╔╝██║   ██║   ██║   
@@ -83,10 +83,10 @@ async def process() -> None:
         logger.debug(f"⚡️ Версия Python: {python_version}")
         logger.debug(f"⚡️ Операционная система: {system} {release}")
     elif system == "Linux":
-        distro_info = distro.linux_distribution()
+        #distro_info = distro.linux_distribution()
         logger.debug(f"⚡️ Версия Python: {python_version}")
         logger.debug(f"⚡️ Операционная система: {system} {release}")
-        logger.debug(f"⚡️ Дистрибутив Linux: {distro_info[0]} {distro_info[1]}")
+        #logger.debug(f"⚡️ Дистрибутив Linux: {distro_info[0]} {distro_info[1]}")
     else:
         logger.debug(f"⚡️ Версия Python: {python_version}")
 
@@ -96,6 +96,7 @@ async def process() -> None:
     logger.info(f"Detected {len(get_session_names())} sessions | {len(get_proxies())} proxies")
     logger.warning("⚠️ \n<e>en:</e> NOT FOR SALE\n<e>ru:</e> НЕ ДЛЯ ПРОДАЖИ\n<e>es:</e> NO VENTA\n<e>fr:</e> PAS À VENDRE\n<e>it:</e> NON PER VENDITA\n<e>gh:</e> YƐN TƆN")
     logger.info("<b>For updates and support visit:</b> <e>https://github.com/sirbiprod/MemeFiBot</e>")
+    logger.info("Special for HiddenCode")
 
     action = parser.parse_args().action
 

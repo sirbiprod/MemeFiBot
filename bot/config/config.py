@@ -1,6 +1,5 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
-
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", env_ignore_empty=True)
 
@@ -10,7 +9,7 @@ class Settings(BaseSettings):
     MIN_AVAILABLE_ENERGY: int = 300
     SLEEP_BY_MIN_ENERGY: int = 314
 
-    ADD_TAPS_ON_TURBO: list[int] = [1300, 2250]
+    ADD_TAPS_ON_TURBO: list[int] = [500, 1500]
 
     AUTO_BUY_TAPBOT: bool = True
 
@@ -19,7 +18,7 @@ class Settings(BaseSettings):
     AUTO_UPGRADE_ENERGY: bool = False
     MAX_ENERGY_LEVEL: int = 5
     AUTO_UPGRADE_CHARGE: bool = False
-    MAX_CHARGE_LEVEL: int = 5
+    MAX_CHARGE_LEVEL: int = 3
 
     APPLY_DAILY_ENERGY: bool = True
     APPLY_DAILY_TURBO: bool = True
@@ -27,13 +26,22 @@ class Settings(BaseSettings):
     RANDOM_TAPS_COUNT: list[int] = [7, 31]
     SLEEP_BETWEEN_TAP: list[int] = [19, 36]
 
-    #AUTO_GENERATE_USER_AGENT_FOR_EACH_SESSION: bool = True
-
     USE_PROXY_FROM_FILE: bool = False
     
     REF: bool = True
+    REF_ID: str
 
     EMERGENCY_STOP: bool = False
+
+    ROLL_CASINO: bool = True
+    VALUE_SPIN: int = 1
+    LOTTERY_INFO: bool = True
+
+    LINEA_BALANCE: bool = True
+    LINEA_API: str
+
+    USE_RANDOM_DELAY_IN_RUN: bool = True
+    RANDOM_DELAY_IN_RUN: list[int] = [3, 15]
 
 
 settings = Settings()
