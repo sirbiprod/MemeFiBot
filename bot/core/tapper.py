@@ -688,27 +688,28 @@ class Tapper:
                                                f"<m>{current_boss_level + 1}</m>")
 
                     spins = profile_data.get('spinEnergyTotal', 0)
-                    while spins > settings.VALUE_SPIN:
-                        await asyncio.sleep(delay=2)
-                        play_data = await self.play_slotmachine(http_client=http_client)
-                        reward_amount = play_data.get('spinResults', [{}])[0].get('rewardAmount', 0)
-                        reward_type = play_data.get('spinResults', [{}])[0].get('rewardType', 'NO')
-                        spins = play_data.get('gameConfig', {}).get('spinEnergyTotal', 0)
-                        balance = play_data.get('gameConfig', {}).get('coinsAmount', 0)
-                        if play_data.get('ethLotteryConfig', {}) is None:
-                            eth_lottery_status = '-'
-                            eth_lottery_ticket = '-'
-                        else:
-                            eth_lottery_status = play_data.get('ethLotteryConfig', {}).get('isCompleted', 0)
-                            eth_lottery_ticket = play_data.get('ethLotteryConfig', {}).get('ticketNumber', 0)
-                        logger.info(f"{self.session_name} | 🎰 Casino game | "
-                                    f"Balance: <lc>{balance:,}</lc> (<lg>+{reward_amount:,}</lg> "
-                                    f"<lm>{reward_type}</lm>) "
-                                    f"| Spins: <le>{spins:,}</le> ")
-                        if settings.LOTTERY_INFO:
-                            logger.info(f"{self.session_name} | 🎟 ETH Lottery status: {eth_lottery_status} |"
-                                        f" 🎫 Ticket number: <yellow>{eth_lottery_ticket}</yellow>")
-                        await asyncio.sleep(delay=5)
+                    if settings.ROLL_CASINO:
+                        while spins > settings.VALUE_SPIN:
+                            await asyncio.sleep(delay=2)
+                            play_data = await self.play_slotmachine(http_client=http_client)
+                            reward_amount = play_data.get('spinResults', [{}])[0].get('rewardAmount', 0)
+                            reward_type = play_data.get('spinResults', [{}])[0].get('rewardType', 'NO')
+                            spins = play_data.get('gameConfig', {}).get('spinEnergyTotal', 0)
+                            balance = play_data.get('gameConfig', {}).get('coinsAmount', 0)
+                            if play_data.get('ethLotteryConfig', {}) is None:
+                                eth_lottery_status = '-'
+                                eth_lottery_ticket = '-'
+                            else:
+                                eth_lottery_status = play_data.get('ethLotteryConfig', {}).get('isCompleted', 0)
+                                eth_lottery_ticket = play_data.get('ethLotteryConfig', {}).get('ticketNumber', 0)
+                            logger.info(f"{self.session_name} | 🎰 Casino game | "
+                                        f"Balance: <lc>{balance:,}</lc> (<lg>+{reward_amount:,}</lg> "
+                                        f"<lm>{reward_type}</lm>) "
+                                        f"| Spins: <le>{spins:,}</le> ")
+                            if settings.LOTTERY_INFO:
+                                logger.info(f"{self.session_name} | 🎟 ETH Lottery status: {eth_lottery_status} |"
+                                            f" 🎫 Ticket number: <yellow>{eth_lottery_ticket}</yellow>")
+                            await asyncio.sleep(delay=5)
 
                     taps = randint(a=settings.RANDOM_TAPS_COUNT[0], b=settings.RANDOM_TAPS_COUNT[1])
                     if taps > boss_current_health:
