@@ -31,7 +31,7 @@ class Settings(BaseSettings):
     USE_PROXY_FROM_FILE: bool = False
     
     REF: bool = True
-    REF_ID: str
+    REF_ID: str = ''
 
     EMERGENCY_STOP: bool = False
 
