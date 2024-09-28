@@ -1,19 +1,15 @@
 # HiddenCode - [https://t.me/hidden_coding](https://t.me/+oBSaBMwFrx8zN2Vk)
 
 
-![img1](./.github/image/hero-image.png)
+![img1](./.github/image/image.png)
 
 # Use Python 3.10 and PROXY (1 acc - 1 proxy)
 
-If you have used another bot before or have a 'NoneType' or 403 error, you will need to wait 12-24 hours before running the bot again 
-[more](https://github.com/sirbiprod/MemeFiBot/issues/3)
-upd: update this bot (just restart or use command:)
-> git pull
 
 ## Functionality
 
 | Functional                                                     | Supported |
-| -------------------------------------------------------------- | :-------: |
+|----------------------------------------------------------------| :-------: |
 | Purchasing TapBot                                              |    ✅     |
 | Starting TapBot                                                |    ✅     |
 | Claiming TapBot reward every 3 hours                           |    ✅     |
@@ -23,31 +19,47 @@ upd: update this bot (just restart or use command:)
 | Auto-purchase of items if you have coins (tap, energy, charge) |    ✅     |
 | Random sleep time between clicks                               |    ✅     |
 | Random number of clicks per request                            |    ✅     |
-| Support tdata / pyrogram .session / telethon .session          |    ✅     |
+| Support pyrogram .session / telethon .session                  |    ✅     |
 | Referral bonus claiming after first time registering           |    ✅     |
-| User Agent for each session                                    |    ✅     |
+| Unique User Agent for each session                             |    ✅     |
+| Bypassing Cloudflare protection                                |    ✅     |
+| Possibility to specify a referral code                         |    ✅     |
+| Displaying the linked Linea wallet                             |    ✅     |
+| Display wallet balance in ETH and USD                          |    ✅     |
+| Automated casino game                                          |    ✅     |
+| Displaying the status and ticket number in the lottery         |    ✅     |
+| Clear config customization with comments                       |    ✅     |
 
-## [Settings](https://github.com/FreddyWhest/MemeFiBot/blob/main/.env-example)
 
-| Settings                 | Description                                                                                 |
-| ------------------------ | --------------------------------------------------------------------------------------------|
-| **API_ID / API_HASH**    | Platform data from which to launch a Telegram session (stock - Android)                     |
-| **MIN_AVAILABLE_ENERGY** | Minimum amount of available energy, upon reaching which there will be a delay (default 300) |
-| **SLEEP_BY_MIN_ENERGY**  | Delay when reaching minimum energy in seconds (eg 314)                                      |
-| **ADD_TAPS_ON_TURBO**    | How many taps will be added when turbo is activated [1300, 2250]                            |
-| **AUTO_UPGRADE_TAP**     | Should I improve the tap (True / False) (default False)                                     |
-| **MAX_TAP_LEVEL**        | Maximum level of tap pumping (eg 5)                                                         |
-| **AUTO_UPGRADE_ENERGY**  | Should I improve the tap (True / False)  (default False)                                    |
-| **MAX_ENERGY_LEVEL**     | Maximum level of tap pumping (eg 5)                                                         |
-| **AUTO_UPGRADE_CHARGE**  | Should I improve the tap (True / False)  (default False)                                    |
-| **MAX_CHARGE_LEVEL**     | Maximum level of tap pumping (eg 5)                                                         |
-| **APPLY_DAILY_ENERGY**   | Whether to use the daily free energy boost (True / False)  (default True)                   |
-| **APPLY_DAILY_TURBO**    | Whether to use the daily free turbo boost (True / False)   (default True)                   |
-| **RANDOM_CLICKS_COUNT**  | Random number of taps     (default [5, 23] )                                                |
-| **SLEEP_BETWEEN_TAP**    | Random delay between taps in seconds (default [15, 25] )                                    |
-| **USE_PROXY_FROM_FILE**  | Whether to use proxy from the `bot/config/proxies.txt` file (True / False)                  |
-| **AUTO_BUY_TAPBOT**      | Whether to purchase tapbot automatically (True / False)                                     |
+## [Settings](https://github.com/sirbiprod/MemeFiBot/blob/main/.env-example)
 
+| Settings                    | Description                                                                                |
+|-----------------------------|--------------------------------------------------------------------------------------------|
+| **API_ID / API_HASH**       | Platform data from which to launch a Telegram session                                      |
+| **MIN_AVAILABLE_ENERGY**    | Minimum amount of available energy, upon reaching which there will be a delay (default 300) |
+| **SLEEP_BY_MIN_ENERGY**     | Delay when reaching minimum energy in seconds                                              |
+| **ADD_TAPS_ON_TURBO**       | How many taps will be added when turbo is activated                                        |
+| **AUTO_UPGRADE_TAP**        | Should I improve the tap                                                                   |
+| **MAX_TAP_LEVEL**           | Maximum level of tap pumping                                                               |
+| **AUTO_UPGRADE_ENERGY**     | Should I improve the tap                                                                   |
+| **MAX_ENERGY_LEVEL**        | Maximum level of tap pumping                                                               |
+| **AUTO_UPGRADE_CHARGE**     | Should I improve the tap                                                                   |
+| **MAX_CHARGE_LEVEL**        | Maximum level of tap pumping                                                               |
+| **APPLY_DAILY_ENERGY**      | Whether to use the daily free energy boost                                                 |
+| **APPLY_DAILY_TURBO**       | Whether to use the daily free turbo boost                                                  |
+| **RANDOM_CLICKS_COUNT**     | Random number of taps                                                                      |
+| **SLEEP_BETWEEN_TAP**       | Random delay between taps in seconds                                                       |
+| **USE_PROXY_FROM_FILE**     | Whether to use proxy from the `bot/config/proxies.txt`                                 |
+| **AUTO_BUY_TAPBOT**         | Whether to purchase tapbot automatically                                                   |
+| **ROLL_CASINO**             | Whether to use the casino                                                                  
+| **VALUE_SPIN**              | Number of spins (multiplier)                                                               
+| **LOTTERY_INFO**            | Displaying lottery information                                                  
+| **LINEA_BALANCE**           | Showing Linea purse 
+| **LINEA_API**               | Linea API key to request balance information
+| **USE_RANDOM_DELAY_IN_RUN** | Using different startup times for accounts
+| **RANDOM_DELAY_IN_RUN**     | Delay range for starting accounts
+| **REF**                     | Referral code activation 
+| **REF_ID**                  | Referral code
 
 ## Installation
 
@@ -64,6 +76,7 @@ You can download [**Repository**](https://github.com/sibiprod/MemeFiBot) by clon
 #Windows
 1. Run install.bat
 2. Run START.bat
+
 OR
 
 ~/MemeFiBot >>> python3 -m venv venv
@@ -94,8 +107,8 @@ Also for quick launch you can use arguments, for example:
 # Or
 ~/MemeFiBot >>> python3 main.py -a (1/2)
 
-#1 - Create session
-#2 - Run clicker
+#1 - Run bot
+#2 - Create session
 ```
 
 ## Acknowledgments
