@@ -14,6 +14,8 @@ from pyrogram import Client
 from pyrogram.errors import Unauthorized, UserDeactivated, AuthKeyUnregistered, FloodWait
 from pyrogram.raw.functions.messages import RequestWebView
 from pyrogram.raw import types
+from datetime import datetime, timedelta, timezone
+from dateutil import parser
 
 from bot.config import settings
 from bot.utils import logger
@@ -596,6 +598,121 @@ class Tapper:
             logger.error(f"{self.session_name} | Error getting ETH price: {error}")
             return None
 
+    async def get_campaigns(self, http_client: aiohttp.ClientSession):
+        try:
+            json_data = {
+                'operationName': "CampaignLists",
+                'query': Query.CampaignLists,
+                'variables': {}
+            }
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            data = await response.json()
+
+            if 'errors' in data:
+                logger.error(f"{self.session_name} | Error while getting campaigns: {data['errors'][0]['message']}")
+                return None
+
+            campaigns = data.get('data', {}).get('campaignLists', {}).get('normal', [])
+            return [campaign for campaign in campaigns if 'youtube' in campaign.get('description', '').lower()]
+
+        except Exception as e:
+            logger.error(f"{self.session_name} | Unknown error while getting campaigns: {str(e)}")
+            return {}
+
+    async def get_tasks_list(self, http_client: aiohttp.ClientSession, campaigns_id: str):
+        try:
+            json_data = {
+                'operationName': "GetTasksList",
+                'query': Query.GetTasksList,
+                'variables': {'campaignId': campaigns_id}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            data = await response.json()
+
+            if 'errors' in data:
+                logger.error(f"{self.session_name} | Error while getting tasks: {data['errors'][0]['message']}")
+                return None
+
+            return data.get('data', {}).get('campaignTasks', [])
+
+        except Exception as e:
+            logger.error(f"{self.session_name} | Unknown error while getting tasks: {str(e)}")
+            return None
+
+    async def verify_campaign(self, http_client: aiohttp.ClientSession, task_id: str):
+        try:
+            json_data = {
+                'operationName': "CampaignTaskToVerification",
+                'query': Query.CampaignTaskToVerification,
+                'variables': {'taskConfigId': task_id}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            data = await response.json()
+
+            if 'errors' in data:
+                logger.error(f"{self.session_name} | Error while verifying task: {data['errors'][0]['message']}")
+                return None
+
+            return data.get('data', {}).get('campaignTaskMoveToVerificationV2')
+        except Exception as e:
+            logger.error(f"{self.session_name} | Unknown error while verifying task: {str(e)}")
+            return None
+
+    async def get_task_by_id(self, http_client: aiohttp.ClientSession, task_id: str):
+        try:
+            json_data = {
+                'operationName': "GetTaskById",
+                'query': Query.GetTaskById,
+                'variables': {'taskId': task_id}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            response.raise_for_status()
+
+            data = await response.json()
+
+            if 'errors' in data:
+                logger.error(f"{self.session_name} | Error while getting task by id: {data['errors'][0]['message']}")
+                return None
+
+            return data.get('data', {}).get('campaignTaskGetConfig')
+        except Exception as e:
+            logger.error(f"{self.session_name} | Unknown error while getting task by id: {str(e)}")
+            return None
+
+    async def complete_task(self, http_client: aiohttp.ClientSession, user_task_id: str):
+        try:
+            json_data = {
+                'operationName': "CampaignTaskMarkAsCompleted",
+                'query': Query.CampaignTaskMarkAsCompleted,
+                'variables': {'userTaskId': user_task_id}
+            }
+
+            response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
+            print(response)
+            response.raise_for_status()
+
+            data = await response.json()
+            print(data)
+
+            if 'errors' in data:
+                logger.error(f"{self.session_name} | Error while completing task: {data['errors'][0]['message']}")
+                return None
+
+            return data.get('data', {}).get('campaignTaskMarkAsCompleted')
+
+        except Exception as e:
+            logger.error(f"{self.session_name} | Unknown error while completing task: {str(e)}")
+            return None
+
     async def run(self, proxy: str | None):
         access_token_created_time = 0
         turbo_time = 0
@@ -686,6 +803,58 @@ class Tapper:
                             if status is True:
                                 logger.success(f"{self.session_name} | ✅ Successful setting next boss: "
                                                f"<m>{current_boss_level + 1}</m>")
+
+                        if settings.WATCH_VIDEO:
+                            task_json = await self.get_campaigns(http_client=http_client)
+                            n = 0
+                            while n < 193:
+                                campaigns_id = task_json[n]['id']
+                                if task_json is not None:
+                                    tasks_list = await self.get_tasks_list(http_client=http_client,
+                                                                           campaigns_id=campaigns_id)
+                                    name = tasks_list[0]['name']
+                                    status = tasks_list[0]['status']
+                                    logger.info(f"{self.session_name} "
+                                                f"| Video: <r>{name}</r> | Status: <y>{status}</y>")
+                                    task_id = tasks_list[0]['id']
+                                    await asyncio.sleep(delay=1)
+                                    if status == 'Verification':
+                                        logger.info(f"{self.session_name} "
+                                                    f"| Unable to complete a task, it is already in progress")
+                                        logger.info(f"{self.session_name} | <r>Skip video</r>")
+                                        n += 1
+                                        continue
+                                    if tasks_list is not None and status != 'Verification':
+                                        await asyncio.sleep(delay=2)
+                                        verify_campaign = await self.verify_campaign(http_client=http_client,
+                                                                                     task_id=task_id)
+                                        status = verify_campaign['status']
+                                        logger.info(f"{self.session_name} "
+                                                    f"| Video: <r>{name}</r> | Status: <y>{status}</y>")
+                                        logger.info(f"{self.session_name} | Waiting 5s")
+                                        await asyncio.sleep(delay=5)
+                                        if verify_campaign is not None:
+                                            get_task_by_id = await self.get_task_by_id(http_client=http_client,
+                                                                                       task_id=task_id)
+                                            user_task_id = get_task_by_id['userTaskId']
+                                            status = get_task_by_id['status']
+
+                                            sleep_time_task = max((parser.isoparse(
+                                                get_task_by_id.get('verificationAvailableAt')) - datetime.now(
+                                                timezone.utc)).total_seconds() + 5, randint(5, 15))
+
+                                            logger.info(f"{self.session_name} "
+                                                        f"| Video: <r>{name}</r> | Status: <y>{status}</y>")
+                                            logger.info(f"{self.session_name} | Waiting {sleep_time_task}s")
+                                            await asyncio.sleep(delay=sleep_time_task)
+                                            if get_task_by_id is not None:
+                                                complete_task = await self.complete_task(http_client=http_client,
+                                                                                         user_task_id=user_task_id)
+                                                status = complete_task['status']
+                                                logger.info(f"{self.session_name} "
+                                                            f"| Video: <r>{name}</r> | Status: <g>{status}</g>")
+                                                await asyncio.sleep(delay=3)
+                                                n += 1
 
                     spins = profile_data.get('spinEnergyTotal', 0)
                     if settings.ROLL_CASINO:

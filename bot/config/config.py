@@ -40,11 +40,13 @@ class Settings(BaseSettings):
     LOTTERY_INFO: bool = True
 
     LINEA_WALLET: bool = True
-    LINEA_SHOW_BALANCE: bool = True
+    LINEA_SHOW_BALANCE: bool = False
     LINEA_API: str = ''
 
     USE_RANDOM_DELAY_IN_RUN: bool = True
     RANDOM_DELAY_IN_RUN: list[int] = [3, 15]
+
+    WATCH_VIDEO: bool = True
 
 
 settings = Settings()
