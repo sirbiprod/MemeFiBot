@@ -806,7 +806,7 @@ class Tapper:
 
                         if settings.WATCH_VIDEO:
                             task_json = await self.get_campaigns(http_client=http_client)
-                            n = 196
+                            n = 0
                             while n < 197:
                                 campaigns_id = task_json[n]['id']
                                 if task_json is not None:
