@@ -29,6 +29,7 @@
 | Automated casino game                                          |    ✅     |
 | Displaying the status and ticket number in the lottery         |    ✅     |
 | Clear config customization with comments                       |    ✅     |
+| Performing tasks on video                                      |    ✅     |
 
 
 ## [Settings](https://github.com/sirbiprod/MemeFiBot/blob/main/.env-example)
@@ -60,6 +61,7 @@
 | **RANDOM_DELAY_IN_RUN**     | Delay range for starting accounts
 | **REF**                     | Referral code activation 
 | **REF_ID**                  | Referral code
+| **WATCH_VIDEO**             | Automatic job execution
 
 ## Installation
 

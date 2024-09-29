@@ -697,11 +697,11 @@ class Tapper:
             }
 
             response = await http_client.post(url=self.GRAPHQL_URL, json=json_data)
-            print(response)
+
             response.raise_for_status()
 
             data = await response.json()
-            print(data)
+
 
             if 'errors' in data:
                 logger.error(f"{self.session_name} | Error while completing task: {data['errors'][0]['message']}")
