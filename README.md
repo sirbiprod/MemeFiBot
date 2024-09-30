@@ -34,34 +34,34 @@
 
 ## [Settings](https://github.com/sirbiprod/MemeFiBot/blob/main/.env-example)
 
-| Settings                    | Description                                                                                |
-|-----------------------------|--------------------------------------------------------------------------------------------|
-| **API_ID / API_HASH**       | Platform data from which to launch a Telegram session                                      |
-| **MIN_AVAILABLE_ENERGY**    | Minimum amount of available energy, upon reaching which there will be a delay (default 300) |
-| **SLEEP_BY_MIN_ENERGY**     | Delay when reaching minimum energy in seconds                                              |
-| **ADD_TAPS_ON_TURBO**       | How many taps will be added when turbo is activated                                        |
-| **AUTO_UPGRADE_TAP**        | Should I improve the tap                                                                   |
-| **MAX_TAP_LEVEL**           | Maximum level of tap pumping                                                               |
-| **AUTO_UPGRADE_ENERGY**     | Should I improve the tap                                                                   |
-| **MAX_ENERGY_LEVEL**        | Maximum level of tap pumping                                                               |
-| **AUTO_UPGRADE_CHARGE**     | Should I improve the tap                                                                   |
-| **MAX_CHARGE_LEVEL**        | Maximum level of tap pumping                                                               |
-| **APPLY_DAILY_ENERGY**      | Whether to use the daily free energy boost                                                 |
-| **APPLY_DAILY_TURBO**       | Whether to use the daily free turbo boost                                                  |
-| **RANDOM_CLICKS_COUNT**     | Random number of taps                                                                      |
-| **SLEEP_BETWEEN_TAP**       | Random delay between taps in seconds                                                       |
-| **USE_PROXY_FROM_FILE**     | Whether to use proxy from the `bot/config/proxies.txt`                                 |
-| **AUTO_BUY_TAPBOT**         | Whether to purchase tapbot automatically                                                   |
-| **ROLL_CASINO**             | Whether to use the casino                                                                  
-| **VALUE_SPIN**              | Number of spins (multiplier)                                                               
-| **LOTTERY_INFO**            | Displaying lottery information                                                  
-| **LINEA_BALANCE**           | Showing Linea purse 
-| **LINEA_API**               | Linea API key to request balance information
-| **USE_RANDOM_DELAY_IN_RUN** | Using different startup times for accounts
-| **RANDOM_DELAY_IN_RUN**     | Delay range for starting accounts
-| **REF**                     | Referral code activation 
-| **REF_ID**                  | Referral code
-| **WATCH_VIDEO**             | Automatic job execution
+| Settings                      | Description                                                                                |
+|-------------------------------|--------------------------------------------------------------------------------------------|
+| **API_ID / API_HASH**         | Platform data from which to launch a Telegram session                                      |
+| **MIN_AVAILABLE_ENERGY**      | Minimum amount of available energy, upon reaching which there will be a delay (default 300) |
+| **SLEEP_BY_MIN_ENERGY**       | Delay when reaching minimum energy in seconds                                              |
+| **ADD_TAPS_ON_TURBO**         | How many taps will be added when turbo is activated                                        |
+| **AUTO_UPGRADE_TAP**          | Should I improve the tap                                                                   |
+| **MAX_TAP_LEVEL**             | Maximum level of tap pumping                                                               |
+| **AUTO_UPGRADE_ENERGY**       | Should I improve the tap                                                                   |
+| **MAX_ENERGY_LEVEL**          | Maximum level of tap pumping                                                               |
+| **AUTO_UPGRADE_CHARGE**       | Should I improve the tap                                                                   |
+| **MAX_CHARGE_LEVEL**          | Maximum level of tap pumping                                                               |
+| **APPLY_DAILY_ENERGY**        | Whether to use the daily free energy boost                                                 |
+| **APPLY_DAILY_TURBO**         | Whether to use the daily free turbo boost                                                  |
+| **RANDOM_CLICKS_COUNT**       | Random number of taps                                                                      |
+| **SLEEP_BETWEEN_TAP**         | Random delay between taps in seconds                                                       |
+| **USE_PROXY_FROM_FILE**       | Whether to use proxy from the `bot/config/proxies.txt`                                 |
+| **AUTO_BUY_TAPBOT**           | Whether to purchase tapbot automatically                                                   |
+| **ROLL_CASINO**               | Whether to use the casino                                                                  
+| **VALUE_SPIN**                | Number of spins (multiplier)                                                               
+| **LOTTERY_INFO**              | Displaying lottery information                                                  
+| **LINEA_WALLET**              | Showing Linea purse 
+| **LINEA_API**                 | Linea API key to request balance information
+| **USE_RANDOM_DELAY_IN_RUN**   | Using different startup times for accounts
+| **RANDOM_DELAY_IN_RUN**       | Delay range for starting accounts
+| **REF**                       | Referral code activation 
+| **REF_ID**                    | Referral code
+| **WATCH_VIDEO**               | Automatic job execution
 
 ## Installation
 
