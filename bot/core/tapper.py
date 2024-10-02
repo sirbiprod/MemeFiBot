@@ -193,7 +193,7 @@ class Tapper:
             await asyncio.sleep(delay=5)
 
     async def get_access_token(self, http_client: aiohttp.ClientSession, tg_web_data: dict[str]):
-        for _ in range(5):
+        for _ in range(2):
             try:
                 response = await http_client.post(url=self.GRAPHQL_URL, json=tg_web_data)
                 response.raise_for_status()
