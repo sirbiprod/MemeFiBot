@@ -3,8 +3,11 @@
 
 ![img1](./.github/image/image.png)
 
-# Use Python 3.10 and PROXY (1 acc - 1 proxy)
-
+# Must be [Python 3.10](https://www.python.org/downloads/release/python-3100/) and [PROXY](https://proxyline.net?ref=323946) (1 acc - 1 proxy)
+# Use [promo code](https://proxyline.net?ref=323946) for 10% off proxies from Proxyline
+```dockerignore
+CMn8jX2sY3oMH6L4O4n
+```
 
 ## Functionality
 
