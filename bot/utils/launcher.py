@@ -97,6 +97,12 @@ async def process() -> None:
     logger.info("If you have a large farm of accounts, you will most likely need this tool; there seem to be no analogues at the moment.")
     logger.info("For any questions please contact https://t.me/sirbiprod")
 
+    logger.info("<r>MemeFi Wallet Generator and Connector</r> - важная информация...")
+    logger.info("Разработчики этого бота создали скрипт, который реализует <y>автоматическую генерацию кошельков Sui</y> и их привязку к сессиям.")
+    logger.info("Если у вас большая ферма аккаунтов, то вам, скорее всего, понадобится этот инструмент; <r>аналогов на данный момент нет</r>")
+    logger.info("For any questions please contact https://t.me/sirbiprod")
+  
+
     await sleep(5)
     logger.info("Run script...")
     logger.info(f"Detected {len(get_session_names())} sessions | {len(get_proxies())} proxies")
